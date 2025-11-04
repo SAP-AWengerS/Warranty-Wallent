@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="frontend/public/ww_logo.png" alt="Warranty Wallet Logo" width="120"/>
+  <img src="frontend/public/ww_logo.png" alt="Warranty Wallet Logo" width="100"/>
 </p>
 
 <h1 align="center">Warranty Wallet</h1>
