@@ -195,7 +195,7 @@ This project is licensed under the MIT License. You’re free to use, modify, an
 
 # 👨‍💻 Contributors
 
-| [<img src="https://avatars.githubusercontent.com/u/101?v=4" width="100" height="100" style="border-radius:50%"/>](https://github.com/brindas) | [<img src="https://avatars.githubusercontent.com/u/102?v=4" width="100" height="100" style="border-radius:50%"/>](https://github.com/ebytom) | [<img src="https://avatars.githubusercontent.com/u/103?v=4" width="100" height="100" style="border-radius:50%"/>](https://github.com/govindmj) | [<img src="https://avatars.githubusercontent.com/u/104?v=4" width="100" height="100" style="border-radius:50%"/>](https://github.com/joyaldevassy) | [<img src="https://avatars.githubusercontent.com/u/105?v=4" width="100" height="100" style="border-radius:50%"/>](https://github.com/nehabimal) |
+| [<img src="https://avatars.githubusercontent.com/u/85933206?v=4" width="100" height="100" style="border-radius:50%"/>](https://github.com/brindas) | [<img src="https://avatars.githubusercontent.com/u/73706705?s=400&u=150831dea33fa9328172f02f5b05c4e9bc1e1b18&v=4" width="100" height="100" style="border-radius:50%"/>](https://github.com/ebytom) | [<img src="https://avatars.githubusercontent.com/u/79135241?v=4" width="100" height="100" style="border-radius:50%"/>](https://github.com/govindmj) | [<img src="https://avatars.githubusercontent.com/u/85976132?v=4" width="100" height="100" style="border-radius:50%"/>](https://github.com/joyaldevassy) | [<img src="https://avatars.githubusercontent.com/u/79042847?v=4" width="100" height="100" style="border-radius:50%"/>](https://github.com/nehabimal) |
 |:--:|:--:|:--:|:--:|:--:|
 | **Brinda S** | **Eby Tom** | **Govind M J** | **Joyal Devassy** | **Neha Bimal** |
 ---
