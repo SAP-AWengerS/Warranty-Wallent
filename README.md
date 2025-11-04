@@ -36,7 +36,7 @@
 
 ---
 
-# 🚀 Project Overview
+# Project Overview
 
 **Warranty Wallet** is a cloud-based web application that helps users store, manage, and track their product warranties digitally.
 It allows uploading warranty bills, tracking warranty periods with automated reminders, and sharing warranty access securely.
@@ -45,7 +45,7 @@ It allows uploading warranty bills, tracking warranty periods with automated rem
 
 ---
 
-# ✨ Features
+# Features
 
 - 📄 **Upload Warranty Bills** – Store and manage your product receipts securely on the cloud.
 - 🧾 **Centralized Management** – Organize warranty details in a single, easy-to-access dashboard.
@@ -56,7 +56,7 @@ It allows uploading warranty bills, tracking warranty periods with automated rem
 
 ---
 
-# 🛠 Tech Stack
+# Tech Stack
 
 | Layer | Technology |
 | :--- | :--- |
@@ -68,7 +68,7 @@ It allows uploading warranty bills, tracking warranty periods with automated rem
 
 ---
 
-# 📦 Getting Started
+# Getting Started
 
 Follow these steps to set up the project locally:
 
@@ -123,7 +123,7 @@ Backend → http://localhost:8000
 ```
 ---
 
-# 🧩 Folder Structure
+# Folder Structure
 ```
 warranty-wallet/
 │
@@ -146,7 +146,7 @@ warranty-wallet/
 ```
 ---
 
-# 🌩️ Cloud Setup
+# Cloud Setup
 
 Warranty Wallet leverages AWS for scalable and reliable deployment:
 
@@ -162,7 +162,7 @@ Vercel: Hosts the frontend React app.
 
 ---
 
-# 🤝 Contributing
+# Contributing
 
 We ❤️ contributions from the open-source community!
 
@@ -202,7 +202,7 @@ This project is licensed under the MIT License. You’re free to use, modify, an
 | **Brinda S** | **Eby Tom** | **Govind M J** | **Joyal Devassy** | **Neha Bimal** |
 ---
 
-# 🔮 Future Scope
+# Future Scope
 
 📆 Add warranty claim tracking & analytics
 
@@ -214,7 +214,7 @@ This project is licensed under the MIT License. You’re free to use, modify, an
 
 ---
 
-# 📬 Contact
+# Contact
 
 **Maintainer:** CodHub 📧 [dev.codhub@gmail.com](mailto:dev.codhub@gmail.com)
 
