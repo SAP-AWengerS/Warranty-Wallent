@@ -41,6 +41,8 @@
 **Warranty Wallet** is a cloud-based web application that helps users store, manage, and track their product warranties digitally.
 It allows uploading warranty bills, tracking warranty periods with automated reminders, and sharing warranty access securely.
 
+⭐ Star this repo if you found it helpful! </p>
+
 ---
 
 # ✨ Features
@@ -214,11 +216,9 @@ This project is licensed under the MIT License. You’re free to use, modify, an
 
 # 📬 Contact
 
-Maintainer: CodHub 📧 dev.codhub@gmail.com 🌐 https://warranty-wallet.vercel.app
+**Maintainer:** CodHub 📧 [dev.codhub@gmail.com](mailto:dev.codhub@gmail.com)
 
 
 
 <p align="center"> Made with ❤️ by <b>Team AWengerS</b>
 
-
-⭐ Star this repo if you found it helpful! </p>
