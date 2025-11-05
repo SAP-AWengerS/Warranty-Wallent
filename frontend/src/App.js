@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import "./App.css";
 import Routes from "./Routes/Routes";
 // import { ToastProvider } from "./Components/ToastContext/ToastContext";
-// import { WarrantyProvider } from "./Components/WarrantyContext/WarrantyContext";
+import { WarrantyProvider } from "./Components/WarrantyContext/WarrantyContext";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -18,9 +18,9 @@ function App() {
       <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_URL}>
         <UserContext.Provider value={{ user, setUser }}>
           {/* <ToastProvider> */}
-            {/* <WarrantyProvider> */}
+            <WarrantyProvider>
               <Routes />
-            {/* </WarrantyProvider> */}
+            </WarrantyProvider>
           {/* </ToastProvider> */}
         </UserContext.Provider>
       </GoogleOAuthProvider>
