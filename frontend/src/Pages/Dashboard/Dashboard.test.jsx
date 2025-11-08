@@ -1,6 +1,7 @@
 /* eslint-disable testing-library/no-wait-for-multiple-assertions */
 import React from "react";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import '@testing-library/jest-dom';
 import Dashboard from "./Dashboard";
 import { Axios } from "../../Config/Axios/Axios";
 import { UserContext } from "../../App";

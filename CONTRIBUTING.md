@@ -121,7 +121,28 @@ This section guides you through submitting suggestions for **new features or imp
 
 3. Make your changes (frontend in client/, backend in server/).
 
-4. Commit your updates
+4. **Write/Update Tests** (Required for frontend contributions)
+   ```bash
+   cd frontend
+   
+   # Run existing tests to ensure nothing is broken
+   npm test -- --watchAll=false
+   
+   # Add tests for new components/features
+   # Tests should be placed in the same directory as the component
+   # Example: src/Components/NewComponent/NewComponent.test.jsx
+   
+   # Ensure test coverage remains high
+   npm test -- --coverage --watchAll=false
+   ```
+
+   **Testing Requirements:**
+   - All new components must have corresponding test files
+   - Tests should cover main functionality, user interactions, and edge cases
+   - Existing tests must continue to pass
+   - Follow existing testing patterns (see `TESTING.md` for details)
+
+5. Commit your updates
   ```bash
   git commit -m "Add: description of your feature or fix"
   ```
@@ -150,11 +171,53 @@ You can help by:
 Submit these improvements just like any other code contribution (via a PR).
 
 ## Styleguides
+
 ### Code Style
 
 - Use Prettier and ESLint for formatting and linting.
 - Follow standard React/Node.js conventions.
 - Use clear, self-documenting variable names.
+
+### Testing Guidelines
+
+**Test File Naming:**
+- Component tests: `ComponentName.test.jsx`
+- Place tests in the same directory as the component
+
+**Test Structure:**
+```javascript
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import ComponentName from './ComponentName';
+
+describe('ComponentName', () => {
+  test('should render correctly', () => {
+    render(<ComponentName />);
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+});
+```
+
+**What to Test:**
+- Component rendering with different props
+- User interactions (clicks, form inputs)
+- API calls and data loading states
+- Error handling and edge cases
+- Conditional rendering logic
+
+**Testing Commands:**
+```bash
+# Run all tests
+npm test -- --watchAll=false
+
+# Run tests with coverage
+npm test -- --coverage --watchAll=false
+
+# Run specific test file
+npm test ComponentName.test.jsx
+```
+
+For detailed testing guidelines, see [TESTING.md](./TESTING.md).
 
 ---
 

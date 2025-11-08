@@ -20,6 +20,9 @@
   <a href="#-getting-started">
     ⚙️ <b>Setup</b>
   </a> •
+  <a href="#-running-tests">
+    🧪 <b>Tests</b>
+  </a> •
   <a href="#-contributing">
     🤝 <b>Contribute</b>
   </a> •
@@ -63,6 +66,7 @@ It allows uploading warranty bills, tracking warranty periods with automated rem
 | **Frontend** | React, Ant Design, Bootstrap |
 | **Backend** | Node.js, Express |
 | **Database** | MongoDB |
+| **Testing** | Jest, React Testing Library |
 | **Cloud & Hosting** | AWS EC2, AWS S3, AWS SNS, Vercel, Render |
 | **Language** | JavaScript (ES6) |
 
@@ -121,9 +125,119 @@ Your app will now be running at:
 Frontend → http://localhost:3000
 Backend → http://localhost:8000
 ```
+
+## 🧪 Running Tests
+
+We use **Jest** and **React Testing Library** for comprehensive unit and integration testing.
+
+### Frontend Tests
+
+Navigate to the frontend directory and run tests:
+
+```bash
+cd frontend
+
+# Run all tests
+npm test
+
+# Run tests without watch mode (CI/CD)
+npm test -- --watchAll=false
+
+# Run tests with coverage
+npm test -- --coverage --watchAll=false
+
+# Run specific test file
+npm test Dashboard.test.jsx
+npm test Filters.test.jsx
+```
+
+### Test Structure
+
+Tests are co-located with their respective components following React best practices:
+
+```
+frontend/src/
+├── Pages/
+│   └── Dashboard/
+│       ├── Dashboard.js
+│       └── Dashboard.test.jsx      # Dashboard component tests
+└── Components/
+    └── Filters/
+        ├── Filters.js
+        └── Filters.test.jsx        # Filters component tests
+```
+
+### Test Coverage
+
+Current test suites cover:
+
+**Dashboard Component (`Dashboard.test.jsx`)**
+- ✅ Loading states and spinners
+- ✅ API data fetching and rendering
+- ✅ Empty state handling
+- ✅ Search functionality and filtering
+- ✅ Error handling and graceful failures
+
+**Filters Component (`Filters.test.jsx`)**
+- ✅ Component rendering and UI elements
+- ✅ User interactions and event handling  
+- ✅ Search input functionality
+- ✅ Category filtering
+
+### Writing New Tests
+
+When adding new components, create test files following this pattern:
+
+1. **File Naming**: `ComponentName.test.jsx`
+2. **Location**: Same directory as the component
+3. **Structure**: Use React Testing Library patterns
+4. **Mocking**: Mock external dependencies (APIs, contexts, etc.)
+
+Example test structure:
+```javascript
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import YourComponent from './YourComponent';
+
+describe('YourComponent', () => {
+  test('should render correctly', () => {
+    render(<YourComponent />);
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+});
+```
 ---
 
 # Folder Structure
+```
+warranty-wallet/
+│
+├── frontend/           # React + Ant Design frontend
+│   ├── src/
+│   │   ├── Pages/
+│   │   │   └── Dashboard/
+│   │   │       ├── Dashboard.js
+│   │   │       └── Dashboard.test.jsx    # Dashboard tests
+│   │   ├── Components/
+│   │   │   └── Filters/
+│   │   │       ├── Filters.js
+│   │   │       └── Filters.test.jsx      # Filters tests
+│   │   └── setupTests.js                 # Jest setup
+│   ├── public/
+│   └── package.json
+│
+├── backend/            # Node.js + Express backend
+│   ├── routes/
+│   ├── controllers/
+│   ├── models/
+│   └── package.json
+│
+├── LICENSE
+├── CONTRIBUTING.md
+├── CODE_OF_CONDUCT.md
+└── README.md
+
+```
 ```
 warranty-wallet/
 │
@@ -185,7 +299,8 @@ git push origin feature/my-feature
 ```
 5️⃣ Open a Pull Request 🚀
 
-For detailed contribution rules, see CONTRIBUTING.md.
+For detailed contribution rules, see [CONTRIBUTING.md](./CONTRIBUTING.md).
+For testing guidelines and best practices, see [TESTING.md](./TESTING.md).
 
 ---
 
