@@ -180,7 +180,7 @@ Current test suites cover:
 
 **Filters Component (`Filters.test.jsx`)**
 - ✅ Component rendering and UI elements
-- ✅ User interactions and event handling  
+- ✅ User interactions and event handling
 - ✅ Search input functionality
 - ✅ Category filtering
 

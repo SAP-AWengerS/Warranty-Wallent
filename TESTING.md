@@ -24,7 +24,7 @@ src/
 │       └── Dashboard.test.jsx
 ├── Components/
 │   └── Filters/
-│       ├── Filters.js  
+│       ├── Filters.js
 │       └── Filters.test.jsx
 └── setupTests.js              # Global test configuration
 ```
@@ -126,10 +126,10 @@ describe('YourComponent', () => {
 
   test('should handle user interaction', async () => {
     render(<YourComponent />);
-    
+
     const button = screen.getByRole('button', { name: /click me/i });
     fireEvent.click(button);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Result')).toBeInTheDocument();
     });
@@ -177,7 +177,7 @@ jest.mock('antd', () => ({
 test('renders component with props', () => {
   const props = { title: 'Test Title', items: [] };
   render(<Component {...props} />);
-  
+
   expect(screen.getByText('Test Title')).toBeInTheDocument();
 });
 ```
@@ -187,7 +187,7 @@ test('renders component with props', () => {
 test('handles button click', () => {
   const mockHandler = jest.fn();
   render(<Button onClick={mockHandler} />);
-  
+
   fireEvent.click(screen.getByRole('button'));
   expect(mockHandler).toHaveBeenCalledTimes(1);
 });
@@ -198,9 +198,9 @@ test('handles button click', () => {
 test('loads data from API', async () => {
   const mockData = [{ id: 1, name: 'Item 1' }];
   Axios.get.mockResolvedValueOnce({ data: mockData });
-  
+
   render(<DataComponent />);
-  
+
   await waitFor(() => {
     expect(screen.getByText('Item 1')).toBeInTheDocument();
   });
@@ -211,9 +211,9 @@ test('loads data from API', async () => {
 ```javascript
 test('handles API error gracefully', async () => {
   Axios.get.mockRejectedValueOnce(new Error('Network Error'));
-  
+
   render(<DataComponent />);
-  
+
   await waitFor(() => {
     expect(screen.getByText(/error/i)).toBeInTheDocument();
   });
@@ -228,7 +228,7 @@ test('handles API error gracefully', async () => {
    ```javascript
    // ✅ Good - tests behavior
    expect(screen.getByText('Welcome')).toBeInTheDocument();
-   
+
    // ❌ Avoid - tests implementation
    expect(component.state.showWelcome).toBe(true);
    ```
@@ -240,7 +240,7 @@ test('handles API error gracefully', async () => {
    screen.getByLabelText(/email/i)
    screen.getByPlaceholderText(/enter email/i)
    screen.getByText(/welcome/i)
-   
+
    // ❌ Less preferred
    screen.getByTestId('submit-button')
    ```

@@ -11,7 +11,7 @@
    - Added quick navigation link to tests section
    - Referenced new TESTING.md file
 
-2. **frontend/README.md** - Frontend-specific documentation  
+2. **frontend/README.md** - Frontend-specific documentation
    - Enhanced npm test section with detailed commands
    - Added test file locations information
    - Explained what's currently being tested
@@ -51,7 +51,7 @@ The updated documentation now covers:
 - CI/CD integration
 - Best practices and common pitfalls
 
-### Contributor Guidelines  
+### Contributor Guidelines
 - Testing requirements for PRs
 - Quality standards and coverage expectations
 - Step-by-step testing workflow
