@@ -28,13 +28,12 @@ const WarrantyDetailsModal = forwardRef(
     const [contentLoader, setContentLoader] = useState(false);
     const [warranty, setWarranty] = useState({});
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const [isError, setIsError] = useState(false);
     const [deleteBtn, setDeleteBtn] = useState(false);
     const [form] = Form.useForm();
     const [deleteForm] = Form.useForm();
 
     const { user } = useContext(UserContext);
-    const { setWarranties, warranties } = useWarranty();
+    const { setWarranties } = useWarranty();
     const toastMessage = useToast();
     const token = localStorage.getItem("token");
 
@@ -63,12 +62,12 @@ const WarrantyDetailsModal = forwardRef(
           })
           .catch((err) => {
             setWarranty({});
-            setIsError(true);
+            console.error('Error fetching warranty details:', err);
             setLoading(false);
           });
       }
       setLoading(false);
-    }, []);
+    }, [warrantyDetails]);
 
     const showLoading = () => {
       setOpen(true);
@@ -86,7 +85,8 @@ const WarrantyDetailsModal = forwardRef(
     const handleDateChange = (e, dateType) => {
       const dateValue = e.target.value;
       // Convert date string to timestamp
-      const timestamp = new Date(dateValue).valueOf();
+      // Convert date to timestamp (currently not used but available for future use)
+      // const timestamp = new Date(dateValue).valueOf();
       form.setFieldsValue({ [dateType]: dateValue });
     };
 
@@ -114,7 +114,7 @@ const WarrantyDetailsModal = forwardRef(
       try {
         const values = await form.validateFields(); // Validate and get form values
         setContentLoader(true);
-    
+
         const formData = new FormData();
         Object.keys(values).forEach((key) => {
           if (key === "invoiceURL" && values.invoiceURL?.[0]?.originFileObj && Object.keys(warranty).length === 0) {
@@ -124,7 +124,7 @@ const WarrantyDetailsModal = forwardRef(
           }
         });
         formData.append("addedBy", user.userId);
-    
+
         if (Object.keys(warranty).length > 0) {
           // Update existing warranty
           await Axios.put(
@@ -153,7 +153,7 @@ const WarrantyDetailsModal = forwardRef(
             toastMessage("success", "Warranty added successfully!");
           });
         }
-    
+
         setContentLoader(false);
         setOpen(false);
         form.resetFields();
@@ -207,7 +207,7 @@ const WarrantyDetailsModal = forwardRef(
           );
           setWarranty(response.data.warranty);
           console.log(response);
-          
+
           toastMessage("success", response.data.message);
         } catch (err) {
           console.error("Failed to share access:", err);
@@ -278,7 +278,7 @@ const WarrantyDetailsModal = forwardRef(
           open={open}
           onCancel={() => {
             setOpen(false);
-            setIsError(false);
+            // Error state reset (no longer used)
           }}
           loading={loading}
         >

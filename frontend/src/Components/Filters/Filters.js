@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { Button, Input, Popover } from "antd";
 import { FilterIcon, PlusIcon, SearchIcon } from "@primer/octicons-react";
 import WarrantyDetailsModal from "../WarrantyDetailsModal/WarrantyDetailsModal";
@@ -6,13 +6,13 @@ import WarrantyDetailsModal from "../WarrantyDetailsModal/WarrantyDetailsModal";
 const Filters = ({ setSearchValue, setSelectedCategories, selectedCategories, setWarranty, warranty }) => {
   const [open, setOpen] = useState(false);
   const [showMore, setShowMore] = useState(false);
-  const categories = [
+  const categories = useMemo(() => [
     { id: "electronics", name: "Electronics" },
     { id: "fashion", name: "Fashion" },
     { id: "home_kitchen", name: "Home & Kitchen" },
     { id: "sport", name: "Sport" },
     { id: "kids_toys", name: "Kids & Toys" },
-  ];
+  ], []);
   const warrantyDetailsModalRef = useRef();
 
   const callWarrantyDetailsModal = () => {

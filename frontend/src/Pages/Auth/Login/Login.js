@@ -7,8 +7,8 @@ import { GoogleLogin } from "@react-oauth/google";
 // import LoginLoaderOverlay from "../../../Components/LoginLoaderOverlay/LoginLoaderOverlay";
 
 const Login = ({ setauthenticated }) => {
-  const [err, seterr] = useState("");
-  const [loader, setLoader] = useState(true);
+  const [, seterr] = useState("");
+  const [, setLoader] = useState(true);
 
   const { setUser } = useContext(UserContext);
   const nav = useNavigate();
@@ -62,12 +62,7 @@ const Login = ({ setauthenticated }) => {
     }
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      login();
-    }
-  };
+  // Removed unused handleKeyDown function
 
   return (
     <>

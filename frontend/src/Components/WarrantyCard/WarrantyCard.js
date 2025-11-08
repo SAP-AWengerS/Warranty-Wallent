@@ -1,16 +1,10 @@
-import React, { useContext, useRef, useState } from "react";
-import {
-  EditOutlined,
-  EllipsisOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
+import React, { useContext, useRef } from "react";
 import { Progress } from "antd";
 import WarrantyDetailsModal from "../WarrantyDetailsModal/WarrantyDetailsModal";
 import { PeopleIcon } from "@primer/octicons-react";
 import { UserContext } from "../../App";
 
 const WarrantyCard = ({ warranty }) => {
-  const [loading, setLoading] = useState(false);
   const warrantyDetailsModalRef = useRef();
 
   const { user } = useContext(UserContext);
@@ -65,7 +59,7 @@ const WarrantyCard = ({ warranty }) => {
                   .join("/")}
               </span>
             </div>
-            {user.userId != warranty.addedBy && (
+            {user.userId !== warranty.addedBy && (
               <div>
                 <PeopleIcon />
               </div>
