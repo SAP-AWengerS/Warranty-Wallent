@@ -48,6 +48,10 @@ It allows uploading warranty bills, tracking warranty periods with automated rem
 
 ---
 
+<img src="frontend/public/demo.mov" alt="Warranty Wallet Logo"/>
+
+---
+
 # Features
 
 - 📄 **Upload Warranty Bills** – Store and manage your product receipts securely on the cloud.
