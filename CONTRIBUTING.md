@@ -5,10 +5,10 @@ First off, thanks for taking the time to contribute! ❤️
 All types of contributions are encouraged and valued. See the [Table of Contents](#table-of-contents) for different ways to help and details about how this project handles them. Please make sure to read the relevant section before making your contribution. It will make it a lot easier for us maintainers and smooth out the experience for all involved. The community looks forward to your contributions. 🎉
 
 > And if you like the project but just don't have time to contribute, that's fine. There are other easy ways to support the project and show your appreciation:
-> - ⭐ Star the project on GitHub  
-> - 🐦 Tweet about it  
-> - 📘 Mention Warranty Wallet in your own project's README  
-> - 💬 Tell your friends, colleagues, and local meetups about it  
+> - ⭐ Star the project on GitHub
+> - 🐦 Tweet about it
+> - 📘 Mention Warranty Wallet in your own project's README
+> - 💬 Tell your friends, colleagues, and local meetups about it
 
 ---
 
@@ -30,7 +30,7 @@ All types of contributions are encouraged and valued. See the [Table of Contents
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Warranty Wallet Code of Conduct](./CODE_OF_CONDUCT.md).  
+This project and everyone participating in it is governed by the [Warranty Wallet Code of Conduct](./CODE_OF_CONDUCT.md).
 By participating, you are expected to uphold this code. Please report unacceptable behavior to **sap.awengers.team@gmail.com**.
 
 ---
@@ -39,12 +39,12 @@ By participating, you are expected to uphold this code. Please report unacceptab
 
 > Before asking, please read the [README](./README.md) and existing project documentation.
 
-Before opening a new issue, search existing [Issues](../../issues) — your question might already have been answered.  
+Before opening a new issue, search existing [Issues](../../issues) — your question might already have been answered.
 
 If you still need clarification:
-- Open a new [Issue](../../issues/new) with a **clear title** and **detailed description**.  
-- Include context about what you are trying to do and what environment you are using (Node.js version, OS, npm version, etc.).  
-- Be patient — maintainers and contributors will respond as soon as possible.  
+- Open a new [Issue](../../issues/new) with a **clear title** and **detailed description**.
+- Include context about what you are trying to do and what environment you are using (Node.js version, OS, npm version, etc.).
+- Be patient — maintainers and contributors will respond as soon as possible.
 
 ---
 
@@ -60,55 +60,55 @@ If you still need clarification:
 #### Before Submitting a Bug Report
 
 A great bug report helps us help you faster. Please:
-- Make sure you’re using the **latest version** of the project.  
-- Check whether your issue has already been reported in [existing issues](../../issues?q=label%3Abug).  
-- Verify that your bug isn’t due to a misconfiguration (check `.env` files and setup steps).  
-- Collect relevant information:  
-  - Steps to reproduce  
-  - Expected vs. actual results  
-  - Stack traces or console logs  
-  - OS and browser details  
-  - Node.js and npm versions  
+- Make sure you’re using the **latest version** of the project.
+- Check whether your issue has already been reported in [existing issues](../../issues?q=label%3Abug).
+- Verify that your bug isn’t due to a misconfiguration (check `.env` files and setup steps).
+- Collect relevant information:
+  - Steps to reproduce
+  - Expected vs. actual results
+  - Stack traces or console logs
+  - OS and browser details
+  - Node.js and npm versions
 
 #### How Do I Submit a Good Bug Report?
 
 > ⚠️ **Security Note:** Do not report security vulnerabilities publicly. Instead, email **sap.awengers.team@gmail.com** directly.
 
 When ready:
-1. Open a new [Issue](../../issues/new).  
-2. Provide all collected context.  
-3. Include clear reproduction steps so others can confirm the bug.  
-4. The team will reproduce and label the issue (`needs-repro`, `bug`, `needs-fix`, etc.).  
-5. Once confirmed, fixes may be implemented by any contributor.  
+1. Open a new [Issue](../../issues/new).
+2. Provide all collected context.
+3. Include clear reproduction steps so others can confirm the bug.
+4. The team will reproduce and label the issue (`needs-repro`, `bug`, `needs-fix`, etc.).
+5. Once confirmed, fixes may be implemented by any contributor.
 
 ---
 
 ### Suggesting Enhancements
 
-This section guides you through submitting suggestions for **new features or improvements** to Warranty Wallet.  
+This section guides you through submitting suggestions for **new features or improvements** to Warranty Wallet.
 
 #### Before Submitting an Enhancement
 
-- Ensure you’re using the latest version.  
-- Read the [README](./README.md) — maybe the feature already exists.  
-- Search existing [issues](../../issues) for similar suggestions.  
-- Consider whether your feature fits the project’s scope (open-source, warranty management, user-friendly cloud app).  
+- Ensure you’re using the latest version.
+- Read the [README](./README.md) — maybe the feature already exists.
+- Search existing [issues](../../issues) for similar suggestions.
+- Consider whether your feature fits the project’s scope (open-source, warranty management, user-friendly cloud app).
 
 #### How Do I Submit a Good Enhancement Suggestion?
 
-- Open a [GitHub issue](../../issues/new) with the label `enhancement`.  
-- Use a **clear and descriptive title**.  
-- Describe:  
-  - The **current behavior** and **desired new behavior**.  
-  - Why the enhancement would be useful for most users.  
-  - Any relevant screenshots, mockups, or diagrams.  
-- If applicable, suggest potential approaches or references (e.g., AWS SNS, React hooks, or MongoDB schema improvements).  
+- Open a [GitHub issue](../../issues/new) with the label `enhancement`.
+- Use a **clear and descriptive title**.
+- Describe:
+  - The **current behavior** and **desired new behavior**.
+  - Why the enhancement would be useful for most users.
+  - Any relevant screenshots, mockups, or diagrams.
+- If applicable, suggest potential approaches or references (e.g., AWS SNS, React hooks, or MongoDB schema improvements).
 
 ---
 
 ### Your First Code Contribution
 
-1. **Fork** the repository  
+1. **Fork** the repository
    ```bash
    git clone https://github.com/YOUR_USERNAME/Warranty-Wallet.git
    cd Warranty-Wallet
@@ -121,7 +121,28 @@ This section guides you through submitting suggestions for **new features or imp
 
 3. Make your changes (frontend in client/, backend in server/).
 
-4. Commit your updates
+4. **Write/Update Tests** (Required for frontend contributions)
+   ```bash
+   cd frontend
+
+   # Run existing tests to ensure nothing is broken
+   npm test -- --watchAll=false
+
+   # Add tests for new components/features
+   # Tests should be placed in the same directory as the component
+   # Example: src/Components/NewComponent/NewComponent.test.jsx
+
+   # Ensure test coverage remains high
+   npm test -- --coverage --watchAll=false
+   ```
+
+   **Testing Requirements:**
+   - All new components must have corresponding test files
+   - Tests should cover main functionality, user interactions, and edge cases
+   - Existing tests must continue to pass
+   - Follow existing testing patterns (see `TESTING.md` for details)
+
+5. Commit your updates
   ```bash
   git commit -m "Add: description of your feature or fix"
   ```
@@ -150,11 +171,53 @@ You can help by:
 Submit these improvements just like any other code contribution (via a PR).
 
 ## Styleguides
+
 ### Code Style
 
 - Use Prettier and ESLint for formatting and linting.
 - Follow standard React/Node.js conventions.
 - Use clear, self-documenting variable names.
+
+### Testing Guidelines
+
+**Test File Naming:**
+- Component tests: `ComponentName.test.jsx`
+- Place tests in the same directory as the component
+
+**Test Structure:**
+```javascript
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import ComponentName from './ComponentName';
+
+describe('ComponentName', () => {
+  test('should render correctly', () => {
+    render(<ComponentName />);
+    expect(screen.getByText('Expected Text')).toBeInTheDocument();
+  });
+});
+```
+
+**What to Test:**
+- Component rendering with different props
+- User interactions (clicks, form inputs)
+- API calls and data loading states
+- Error handling and edge cases
+- Conditional rendering logic
+
+**Testing Commands:**
+```bash
+# Run all tests
+npm test -- --watchAll=false
+
+# Run tests with coverage
+npm test -- --coverage --watchAll=false
+
+# Run specific test file
+npm test ComponentName.test.jsx
+```
+
+For detailed testing guidelines, see [TESTING.md](./TESTING.md).
 
 ---
 
@@ -184,7 +247,7 @@ Thank you for helping us make warranty management effortless and open-source for
 ---
 
 ## ✅ How to Use:
-1. Copy the entire block above.  
-2. Paste it into a new file in your repo: `/CONTRIBUTING.md`.  
-3. Commit and push — GitHub will automatically link it on the repository page.  
+1. Copy the entire block above.
+2. Paste it into a new file in your repo: `/CONTRIBUTING.md`.
+3. Commit and push — GitHub will automatically link it on the repository page.
 

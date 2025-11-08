@@ -19,6 +19,41 @@ You may also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+#### Test Commands
+
+```bash
+# Run all tests in watch mode
+npm test
+
+# Run tests once (useful for CI/CD)
+npm test -- --watchAll=false
+
+# Run tests with coverage report
+npm test -- --coverage --watchAll=false
+
+# Run specific test file
+npm test Dashboard.test.jsx
+
+# Run tests matching a pattern
+npm test -- --testNamePattern="Dashboard"
+```
+
+#### Test Files Location
+
+Tests are located alongside their respective components:
+
+- **Dashboard Tests**: `src/Pages/Dashboard/Dashboard.test.jsx`
+- **Filters Tests**: `src/Components/Filters/Filters.test.jsx`
+
+#### What's Tested
+
+Our test suite covers:
+- Component rendering and UI elements
+- User interactions (clicks, form inputs, etc.)
+- API data fetching and error handling
+- Search and filtering functionality
+- Loading states and edge cases
+
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
