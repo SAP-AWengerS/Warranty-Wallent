@@ -1,22 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Axios } from "../../Config/Axios/Axios";
 import { UserContext } from "../../App";
-import { Divider, Flex, message, Spin } from "antd";
-import { PlusCircleFilled } from "@ant-design/icons";
-import LoaderOverlay from "../../Components/LoaderOverlay/LoaderOverlay";
-import CategoryFilter from "../../Components/Filters/CategoryFilter/CategoryFilter";
+import { message, Spin } from "antd";
 import Filters from "../../Components/Filters/Filters";
 import WarrantyCard from "../../Components/WarrantyCard/WarrantyCard";
 import { useWarranty } from '../../Components/WarrantyContext/WarrantyContext';
 
 const Dashboard = () => {
   const [contentLoader, setContentLoader] = useState(true);
-  const [loader, setLoader] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const [isError, setIsError] = useState(false);
-  const [metadata, setMetadata] = useState([]);
 
   const [messageApi, contextHolder] = message.useMessage();
   const { setWarranties, warranties } = useWarranty();
@@ -64,12 +58,12 @@ const Dashboard = () => {
         setContentLoader(false);
       })
       .catch((err) => {
-        setIsError(true);
+        console.error('Error fetching warranties:', err);
         setContentLoader(false);
       });
 
     return () => {};
-  }, []);
+  }, [setWarranties, token, user.userId]);
 
   return (
     <>
