@@ -48,7 +48,9 @@ It allows uploading warranty bills, tracking warranty periods with automated rem
 
 ---
 
-<img src="frontend/public/demo.mov" alt="Warranty Wallet Logo"/>
+
+https://github.com/user-attachments/assets/73ee4953-21d0-4a73-a1d7-4e7ef12be286
+
 
 ---
 
