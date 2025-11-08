@@ -1,0 +1,16 @@
+{
+  "buildCommand": "CI=false npm run build",
+  "outputDirectory": "build",
+  "installCommand": "npm install",
+  "devCommand": "npm start",
+  "framework": null,
+  "env": {
+    "CI": "false"
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

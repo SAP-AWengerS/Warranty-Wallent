@@ -114,7 +114,7 @@ const WarrantyDetailsModal = forwardRef(
       try {
         const values = await form.validateFields(); // Validate and get form values
         setContentLoader(true);
-    
+
         const formData = new FormData();
         Object.keys(values).forEach((key) => {
           if (key === "invoiceURL" && values.invoiceURL?.[0]?.originFileObj && Object.keys(warranty).length === 0) {
@@ -124,7 +124,7 @@ const WarrantyDetailsModal = forwardRef(
           }
         });
         formData.append("addedBy", user.userId);
-    
+
         if (Object.keys(warranty).length > 0) {
           // Update existing warranty
           await Axios.put(
@@ -153,7 +153,7 @@ const WarrantyDetailsModal = forwardRef(
             toastMessage("success", "Warranty added successfully!");
           });
         }
-    
+
         setContentLoader(false);
         setOpen(false);
         form.resetFields();
@@ -207,7 +207,7 @@ const WarrantyDetailsModal = forwardRef(
           );
           setWarranty(response.data.warranty);
           console.log(response);
-          
+
           toastMessage("success", response.data.message);
         } catch (err) {
           console.error("Failed to share access:", err);
