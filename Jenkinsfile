@@ -135,15 +135,13 @@ pipeline {
                     }
                     post {
                         always {
-                            // Publish coverage reports if available
-                            publishHTML(target: [
-                                allowMissing: true,
-                                alwaysLinkToLastBuild: true,
-                                keepAll: true,
-                                reportDir: "${FRONTEND_DIR}/coverage/lcov-report",
-                                reportFiles: 'index.html',
-                                reportName: 'Frontend Coverage Report'
-                            ])
+                            script {
+                                echo '📊 Test coverage generated in frontend/coverage/'
+                                // Archive coverage reports as artifacts
+                                dir(FRONTEND_DIR) {
+                                    archiveArtifacts artifacts: 'coverage/**/*', allowEmptyArchive: true, fingerprint: true
+                                }
+                            }
                         }
                     }
                 }
