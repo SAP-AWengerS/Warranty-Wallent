@@ -128,16 +128,13 @@ pipeline {
                             dir(FRONTEND_DIR) {
                                 sh '''
                                     # Run tests without watch mode for CI
-                                    CI=true npm test -- --coverage --watchAll=false --testResultsProcessor=jest-junit || true
+                                    CI=true npm test -- --coverage --watchAll=false || true
                                 '''
                             }
                         }
                     }
                     post {
                         always {
-                            // Publish test results if jest-junit is configured
-                            junit(testResults: "${FRONTEND_DIR}/junit.xml", allowEmptyResults: true)
-
                             // Publish coverage reports if available
                             publishHTML(target: [
                                 allowMissing: true,
@@ -259,4 +256,3 @@ pipeline {
         }
     }
 }
- 
