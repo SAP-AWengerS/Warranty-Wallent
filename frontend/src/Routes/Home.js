@@ -1,13 +1,13 @@
 import React from 'react'
 import { Navigate, Route, Routes as Switch } from 'react-router-dom'
 import Dashboard from '../Pages/Dashboard/Dashboard'
-// import NavBar from '../Components/NavBar/NavBar'
+import NavBar from '../Components/NavBar/NavBar'
 
 const Home = () => {
 
     return (
         <div style={{ height: "100vh", width: "100vw", padding: 16}}>
-            {/* <NavBar /> */}
+            <NavBar />
             <Switch>
                 <Route path="/dashboard" element={<Dashboard />} />s
                 <Route path="/*"  element={<Navigate to="/dashboard" replace />} />
