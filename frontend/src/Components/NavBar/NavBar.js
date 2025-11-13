@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Divider, Space } from "antd";
 import { MenuFoldOutlined } from "@ant-design/icons";
 import { PersonIcon } from "@primer/octicons-react";
-// import ProfileDrawer from "../ProfileDrawer/ProfileDrawer";
+import ProfileDrawer from "../ProfileDrawer/ProfileDrawer";
 import NotificationDrawer from "../NotificationDrawer/NotificationDrawer";
 
 const NavBar = () => {
@@ -56,10 +56,10 @@ const NavBar = () => {
       </Space>
 
       <NotificationDrawer navOpen={navOpen} setNavOpen={setNavOpen} />
-      {/* <ProfileDrawer
+      <ProfileDrawer
         profileOpen={profileOpen}
         setProfileOpen={setProfileOpen}
-      /> */}
+      />
       <Divider
         style={{
           borderColor: "#ddd",
