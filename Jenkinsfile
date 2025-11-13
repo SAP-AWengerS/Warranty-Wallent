@@ -155,7 +155,10 @@ pipeline {
                         script {
                             echo '🏗️ Building frontend application...'
                             dir(FRONTEND_DIR) {
-                                sh 'npm run build'
+                                sh '''
+                                export NODE_OPTIONS="--experimental-webstorage --localstorage-file=./localStorage.json"
+                                npm run build
+                                '''
                             }
                         }
                     }
