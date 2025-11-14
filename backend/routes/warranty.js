@@ -16,7 +16,7 @@ const router = express.Router();
 
 const upload = multer({
   storage: multer.memoryStorage(), // Store file in memory for direct upload to S3
-  limits: { fileSize: 5 * 1024 * 1024 }, // Optional: limit file size to 5MB
+  limits: { fileSize: 5 * 1024 * 1024 }, // limited file size to 5MB
 });
 
 router.post("/addWarranty", upload.single("invoiceFile"), addWarranty);

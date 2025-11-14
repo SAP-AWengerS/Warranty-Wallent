@@ -2,82 +2,72 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS'  // Ensure NodeJS is configured in Jenkins Global Tool Configuration
+        nodejs 'NodeJS'
     }
 
     environment {
-        // Environment variables
         FRONTEND_DIR = 'frontend'
         BACKEND_DIR = 'backend'
         NODE_ENV = 'test'
     }
 
     stages {
+
         stage('Checkout') {
             steps {
-                script {
-                    echo '🔄 Checking out code from repository...'
-                    checkout scm
-                }
+                echo '🔄 Checking out code...'
+                checkout scm
+                githubNotify context: 'Jenkins CI', status: 'PENDING', description: 'Build started'
             }
         }
 
         stage('Environment Info') {
             steps {
-                script {
-                    echo '📋 Displaying environment information...'
-                    sh '''
-                        echo "Node Version: $(node --version)"
-                        echo "NPM Version: $(npm --version)"
-                        echo "Current Directory: $(pwd)"
-                        echo "Branch: ${GIT_BRANCH}"
-                        echo "Commit: ${GIT_COMMIT}"
-                    '''
-                }
+                sh '''
+                    echo "Node Version: $(node --version)"
+                    echo "NPM Version: $(npm --version)"
+                    echo "Directory: $(pwd)"
+                    echo "Branch: ${GIT_BRANCH}"
+                    echo "Commit: ${GIT_COMMIT}"
+                '''
             }
         }
 
         stage('Install Dependencies') {
             parallel {
-                stage('Backend Dependencies') {
+                stage('Backend Deps') {
                     steps {
-                        script {
-                            echo '📦 Installing backend dependencies...'
-                            dir(BACKEND_DIR) {
-                                sh 'npm ci --prefer-offline --no-audit'
-                            }
+                        dir(BACKEND_DIR) {
+                            echo '📦 Installing backend deps...'
+                            sh 'npm ci --prefer-offline --no-audit'
                         }
                     }
                 }
 
-                stage('Frontend Dependencies') {
+                stage('Frontend Deps') {
                     steps {
-                        script {
-                            echo '📦 Installing frontend dependencies...'
-                            dir(FRONTEND_DIR) {
-                                sh 'npm ci --prefer-offline --no-audit'
-                            }
+                        dir(FRONTEND_DIR) {
+                            echo '📦 Installing frontend deps...'
+                            sh 'npm ci --prefer-offline --no-audit'
                         }
                     }
                 }
             }
         }
 
-        stage('Code Quality Checks') {
+        stage('Lint') {
             parallel {
+
                 stage('Backend Lint') {
                     steps {
-                        script {
-                            echo '🔍 Running backend code quality checks...'
-                            dir(BACKEND_DIR) {
-                                // Add lint check if configured in package.json
-                                sh '''
-                                    if grep -q "\\"lint\\"" package.json; then
-                                        npm run lint || echo "⚠️ Linting not configured or failed"
-                                    else
-                                        echo "ℹ️ No lint script found in backend package.json"
-                                    fi
-                                '''
+                        dir(BACKEND_DIR) {
+                            echo '🔍 Backend Lint...'
+                            script {
+                                if (fileExists('package.json')) {
+                                    sh 'npm run lint'
+                                } else {
+                                    echo "ℹ️ No lint script found"
+                                }
                             }
                         }
                     }
@@ -85,16 +75,14 @@ pipeline {
 
                 stage('Frontend Lint') {
                     steps {
-                        script {
-                            echo '🔍 Running frontend code quality checks...'
-                            dir(FRONTEND_DIR) {
-                                sh '''
-                                    if grep -q "\\"lint\\"" package.json; then
-                                        npm run lint || echo "⚠️ Linting not configured or failed"
-                                    else
-                                        echo "ℹ️ No lint script found in frontend package.json"
-                                    fi
-                                '''
+                        dir(FRONTEND_DIR) {
+                            echo '🔍 Frontend Lint...'
+                            script {
+                                if (fileExists('package.json')) {
+                                    sh 'npm run lint'
+                                } else {
+                                    echo "ℹ️ No lint script found"
+                                }
                             }
                         }
                     }
@@ -106,41 +94,24 @@ pipeline {
             parallel {
                 stage('Backend Tests') {
                     steps {
-                        script {
-                            echo '🧪 Running backend tests...'
-                            dir(BACKEND_DIR) {
-                                sh '''
-                                    if grep -q "\\"test\\"" package.json; then
-                                        npm test || echo "⚠️ Backend tests not configured or failed"
-                                    else
-                                        echo "ℹ️ No test script found in backend package.json"
-                                    fi
-                                '''
-                            }
+                        dir(BACKEND_DIR) {
+                            echo '🧪 Backend Tests...'
+                            sh 'npm test'
                         }
                     }
                 }
 
                 stage('Frontend Tests') {
                     steps {
-                        script {
-                            echo '🧪 Running frontend tests...'
-                            dir(FRONTEND_DIR) {
-                                sh '''
-                                    # Run tests without watch mode for CI
-                                    CI=true npm test -- --coverage --watchAll=false || true
-                                '''
-                            }
+                        dir(FRONTEND_DIR) {
+                            echo '🧪 Frontend Tests...'
+                            sh 'CI=true npm test -- --coverage --watchAll=false'
                         }
                     }
                     post {
                         always {
-                            script {
-                                echo '📊 Test coverage generated in frontend/coverage/'
-                                // Archive coverage reports as artifacts
-                                dir(FRONTEND_DIR) {
-                                    archiveArtifacts artifacts: 'coverage/**/*', allowEmptyArchive: true, fingerprint: true
-                                }
+                            dir(FRONTEND_DIR) {
+                                archiveArtifacts artifacts: 'coverage/**/*', allowEmptyArchive: true
                             }
                         }
                     }
@@ -152,32 +123,27 @@ pipeline {
             parallel {
                 stage('Build Frontend') {
                     steps {
-                        script {
-                            echo '🏗️ Building frontend application...'
-                            dir(FRONTEND_DIR) {
-                                sh '''
+                        dir(FRONTEND_DIR) {
+                            echo '🏗️ Building frontend...'
+                            sh '''
                                 export NODE_OPTIONS="--experimental-webstorage --localstorage-file=./localStorage.json"
                                 npm run build
-                                '''
-                            }
+                            '''
                         }
                     }
                 }
 
-                stage('Validate Backend') {
+                stage('Validate Backend Structure') {
                     steps {
-                        script {
-                            echo '✅ Validating backend structure...'
-                            dir(BACKEND_DIR) {
-                                sh '''
-                                    echo "Checking for required files..."
-                                    test -f package.json && echo "✓ package.json found"
-                                    test -f app.js && echo "✓ app.js found"
-                                    test -d routes && echo "✓ routes directory found"
-                                    test -d controllers && echo "✓ controllers directory found"
-                                    test -d models && echo "✓ models directory found"
-                                '''
-                            }
+                        dir(BACKEND_DIR) {
+                            echo '📁 Validating backend files...'
+                            sh '''
+                                test -f package.json
+                                test -f app.js
+                                test -d routes
+                                test -d controllers
+                                test -d models
+                            '''
                         }
                     }
                 }
@@ -186,74 +152,44 @@ pipeline {
 
         stage('Security Audit') {
             steps {
-                script {
-                    echo '🔒 Running security audit...'
-
-                    // Frontend security audit
-                    dir(FRONTEND_DIR) {
-                        sh '''
-                            echo "Running frontend security audit..."
-                            npm audit --audit-level=moderate || echo "⚠️ Security vulnerabilities found in frontend"
-                        '''
-                    }
-
-                    // Backend security audit
-                    dir(BACKEND_DIR) {
-                        sh '''
-                            echo "Running backend security audit..."
-                            npm audit --audit-level=moderate || echo "⚠️ Security vulnerabilities found in backend"
-                        '''
-                    }
+                echo '🔒 Running npm audit...'
+                dir(FRONTEND_DIR) {
+                    sh 'npm audit --audit-level=moderate || true'
+                }
+                dir(BACKEND_DIR) {
+                    sh 'npm audit --audit-level=moderate || true'
                 }
             }
         }
 
-        stage('Archive Artifacts') {
+        stage('Archive Build Artifacts') {
             steps {
-                script {
-                    echo '📦 Archiving build artifacts...'
-                    archiveArtifacts artifacts: "${FRONTEND_DIR}/build/**/*", allowEmptyArchive: true, fingerprint: true
-                }
+                echo '📦 Archiving build artifacts...'
+                archiveArtifacts artifacts: "${FRONTEND_DIR}/build/**/*", allowEmptyArchive: true
             }
         }
     }
 
     post {
-        always {
-            echo '🧹 Cleaning up workspace...'
-            cleanWs(
-                deleteDirs: true,
-                patterns: [
-                    [pattern: '**/node_modules', type: 'INCLUDE'],
-                    [pattern: '**/.npm', type: 'INCLUDE']
-                ]
-            )
-        }
 
         success {
-            echo '✅ Pipeline completed successfully!'
-            // You can add notifications here (email, Slack, etc.)
-            // Example for email:
-            // emailext (
-            //     subject: "✅ Jenkins Build Success: ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
-            //     body: "The build completed successfully. Check details at: ${env.BUILD_URL}",
-            //     to: "dev.codhub@gmail.com"
-            // )
+            echo '✅ Pipeline succeeded!'
+            githubNotify context: 'Jenkins CI', status: 'SUCCESS', description: 'Build passed'
         }
 
         failure {
             echo '❌ Pipeline failed!'
-            // You can add failure notifications here
-            // Example for email:
-            // emailext (
-            //     subject: "❌ Jenkins Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}",
-            //     body: "The build failed. Check details at: ${env.BUILD_URL}",
-            //     to: "dev.codhub@gmail.com"
-            // )
+            githubNotify context: 'Jenkins CI', status: 'FAILURE', description: 'Errors in build'
         }
 
         unstable {
-            echo '⚠️ Pipeline is unstable!'
+            echo '⚠️ Pipeline unstable!'
+            githubNotify context: 'Jenkins CI', status: 'ERROR', description: 'Unstable build'
+        }
+
+        always {
+            echo '🧹 Cleaning workspace...'
+            cleanWs()
         }
     }
 }
