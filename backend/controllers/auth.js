@@ -134,11 +134,3 @@ module.exports.changePassword = catchAsyncError(async (req, res, next) => {
         user: user
     });
 });
-
-module.exports.signUpWithGoogle = catchAsyncError(async (req, res, next) => {
-    // TODO: Implement Google sign-up logic
-    res.status(501).json({
-        code: 501,
-        message: "Google sign-up not implemented yet"
-    });
-});
