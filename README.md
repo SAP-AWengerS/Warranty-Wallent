@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://warranty-wallet.vercel.app" target="_blank">
+  <a href="https://warrenty-wallet.vercel.app" target="_blank">
     🌐 <b>Live Demo</b>
   </a> •
   <a href="#-project-overview">
