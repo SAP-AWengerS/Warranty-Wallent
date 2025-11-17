@@ -6,7 +6,7 @@ const ConfirmModal = ({ title, content, onOk, onCancel, children }) => {
   const handleClick = () => {
     Modal.confirm({
       title: title || 'Are you sure?',
-      content: content || 'Do you really want to perform this action?',
+      content: content || 'Do you want to perform this action?',
       onOk: onOk,
       onCancel: onCancel,
     });
