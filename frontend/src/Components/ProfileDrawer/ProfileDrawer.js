@@ -1,10 +1,7 @@
 import { Divider, Drawer, FloatButton } from "antd";
-import React, {
-  createContext,
+import {
   useContext,
-  useEffect,
   useRef,
-  useState,
 } from "react";
 import { googleLogout } from "@react-oauth/google";
 import ConfirmModal from "../ConfirmModal/ConfirmModal";
@@ -12,46 +9,11 @@ import { CloseOutlined } from "@ant-design/icons";
 import GetHelpModal from "../GetHelpModal/GetHelpModal";
 import PrivacyPolicyModal from "../PrivacyPolicyModal/PrivacyPolicyModal";
 import AboutUsModal from "../AboutUsModal/AboutUsModal";
-import { Axios } from "../../Config/Axios/Axios";
 import { UserContext } from "../../App";
-const ReachableContext = createContext(null);
-const UnreachableContext = createContext(null);
 
 const ProfileDrawer = ({ profileOpen, setProfileOpen }) => {
-  const [userCredentials, setuserCredentials] = useState(null);
-  const [metadata, setMetadata] = useState({});
-  const [isError, setIsError] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   const { user } = useContext(UserContext);
-
-  const token = localStorage.getItem('token')
-
-  useEffect(() => {
-    // const userCred = jwtDecode(localStorage.getItem("token"));
-    // setuserCredentials(userCred);
-
-    // setLoading(true);
-
-    // Axios.get(`/api/v1/app/metadata/getProfileMetadataByUserId`, {
-    //   params: {
-    //     userId: user?.userId,
-    //   },
-    //   headers: {
-    //     authorization: `bearer ${token}`,
-    //   },
-    // })
-    //   .then((res) => {
-    //     setMetadata(res.data);
-    //     setLoading(false);
-    //   })
-    //   .catch((err) => {
-    //     setIsError(true);
-    //     setLoading(false);
-    //   });
-    setLoading(false);
-
-  }, []);
 
   const onProfileClose = () => {
     setProfileOpen(false);
@@ -93,7 +55,6 @@ const ProfileDrawer = ({ profileOpen, setProfileOpen }) => {
       open={profileOpen}
       style={{ padding: 0 }}
       key={"right"}
-      loading={loading}
     >
       <div className="card" style={{ borderRadius: "6px" }}>
         <div className="card-body text-center">

@@ -47,7 +47,7 @@ const Filters = ({ setSearchValue, setSelectedCategories, selectedCategories, se
         });
 
       return () => {};
-    }, []);
+    }, [token, user.userId]);
 
   const callWarrantyDetailsModal = () => {
     if (warrantyDetailsModalRef.current) {
