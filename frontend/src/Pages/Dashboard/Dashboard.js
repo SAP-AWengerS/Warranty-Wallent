@@ -11,6 +11,8 @@ const Dashboard = () => {
   const [searchValue, setSearchValue] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [showSharedWarranties, setShowSharedWarranties] = useState(false);
+  const [showActiveWarranties, setShowActiveWarranties] = useState(false);
 
   const [messageApi, contextHolder] = message.useMessage();
   const { setWarranties, warranties } = useWarranty();
@@ -28,6 +30,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     const lowercasedValue = searchValue.toLowerCase().trim();
+    const currentDate = new Date();
+
     const filtered = warranties.filter((item) => {
       const matchesSearch =
         item.itemName.toLowerCase().includes(lowercasedValue) ||
@@ -37,11 +41,21 @@ const Dashboard = () => {
         ? selectedCategories.includes(item.category)
         : true; // If no categories are selected, show all
 
-      return matchesSearch && matchesCategory;
+      // Shared warranties filter - show warranties where current user is in sharedWith array
+      const matchesSharedFilter = showSharedWarranties
+        ? (item.sharedWith && item.sharedWith.includes(user.email))
+        : true;
+
+      // Active warranties filter
+      const matchesActiveFilter = showActiveWarranties
+        ? (new Date(item.expiresOn) > currentDate)
+        : true;
+
+      return matchesSearch && matchesCategory && matchesSharedFilter && matchesActiveFilter;
     });
 
     setFilteredData(filtered); // Set filtered data based on search input and selected categories
-  }, [searchValue, selectedCategories, warranties]);
+  }, [searchValue, selectedCategories, warranties, showSharedWarranties, showActiveWarranties, user.userId]);
 
   useEffect(() => {
     setContentLoader(true);
@@ -72,6 +86,10 @@ const Dashboard = () => {
         setSearchValue={setSearchValue}
         selectedCategories={selectedCategories}
         setSelectedCategories={setSelectedCategories}
+        showSharedWarranties={showSharedWarranties}
+        setShowSharedWarranties={setShowSharedWarranties}
+        showActiveWarranties={showActiveWarranties}
+        setShowActiveWarranties={setShowActiveWarranties}
       />
       {/* <LoaderOverlay isVisible={contentLoader} /> */}
       {contentLoader ? (

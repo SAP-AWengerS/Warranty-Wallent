@@ -106,7 +106,7 @@ const ProfileDrawer = ({ profileOpen, setProfileOpen }) => {
             }
             referrerPolicy="no-referrer"
             className="rounded-circle img-fluid"
-            style={{ width: "50px" }}
+            style={{ width: "100px" }}
             alt="User"
           />
           </div>
