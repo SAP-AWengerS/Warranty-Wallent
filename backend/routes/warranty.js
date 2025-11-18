@@ -8,7 +8,8 @@ const {
   uploadInvoice,
   getExpiringWarrantiesByUser,
   shareAccess,
-  revokeAccess
+  revokeAccess,
+  getWarrantyStatsByUser,
 } = require("../controllers/warrantyController");
 const multer = require("multer");
 
@@ -24,7 +25,7 @@ router.post("/uploadInvoice", uploadInvoice);
 router.get("/getAllWarrantyByUser/:addedBy", getAllWarrantyByUser); //userid
 router.get("/getWarrantyById/:id", getWarrantyById); //truckid
 router.delete("/deleteWarrantyById/:id", deleteWarrantyById);
-router.get("/stats/:addedBy", warrantyController.getWarrantyStatsByUser);
+router.get("/stats/:addedBy", getWarrantyStatsByUser);
 router.put(
   "/updateWarrantyById/:id",
   upload.single("invoiceFile"),

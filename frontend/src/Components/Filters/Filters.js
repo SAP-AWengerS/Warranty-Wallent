@@ -2,10 +2,17 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import { Button, Input, Popover } from "antd";
 import { FilterIcon, PlusIcon, SearchIcon } from "@primer/octicons-react";
 import WarrantyDetailsModal from "../WarrantyDetailsModal/WarrantyDetailsModal";
+import { Axios } from "../../Config/Axios/Axios";
+import { useContext } from "react";
+import { UserContext } from "../../App";
 
 const Filters = ({ setSearchValue, setSelectedCategories, selectedCategories, setWarranty, warranty, showSharedWarranties, setShowSharedWarranties, showActiveWarranties, setShowActiveWarranties }) => {
   const [open, setOpen] = useState(false);
   const [showMore, setShowMore] = useState(false);
+  const [stats, setStats] = useState({
+    total: 0,
+    active: 0,
+  });
   const categories = useMemo(() => [
     { id: "electronics", name: "Electronics" },
     { id: "fashion", name: "Fashion" },
@@ -14,6 +21,33 @@ const Filters = ({ setSearchValue, setSelectedCategories, selectedCategories, se
     { id: "kids_toys", name: "Kids & Toys" },
   ], []);
   const warrantyDetailsModalRef = useRef();
+
+  const { user } = useContext(UserContext);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+      // setContentLoader(true);
+      Axios.get(
+        `/api/v1/app/warranty/stats/${user.userId}`,
+        {
+          params: {
+            addedBy: user.userId,
+          },
+          headers: {
+            authorization: `bearer ${token}`,
+          },
+        }
+      )
+        .then((res) => {
+          setStats(res.data);
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      return () => {};
+    }, [token, user.userId]);
 
   const callWarrantyDetailsModal = () => {
     if (warrantyDetailsModalRef.current) {
@@ -58,7 +92,7 @@ const Filters = ({ setSearchValue, setSelectedCategories, selectedCategories, se
       id: "total",
       icon: "∑",
       label: "Total Count",
-      value: "35",
+      value: stats?.total,
       gradient: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
       shadowColor: "rgba(30, 60, 114, 0.3)",
       hoverShadowColor: "rgba(30, 60, 114, 0.4)",
@@ -68,7 +102,7 @@ const Filters = ({ setSearchValue, setSelectedCategories, selectedCategories, se
       id: "active",
       icon: "✓",
       label: "Active Warranty",
-      value: "20",
+      value: stats?.active,
       gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       shadowColor: "rgba(102, 126, 234, 0.3)",
       hoverShadowColor: "rgba(102, 126, 234, 0.4)",

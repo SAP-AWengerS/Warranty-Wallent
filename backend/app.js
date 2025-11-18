@@ -21,7 +21,7 @@ const warrantyRouter = require('./routes/warranty');
 const app = express();
 
 // middlewares
-app.use(cors());
+app.use(cors())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -29,6 +29,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
+app.use('/api/v1/app/warranty', warrantyRouter);
+
 app.use('/api/v1/app/auth', authRouter);
 app.use('/api/v1/app/users', isAuthenticated, usersRouter);
 app.use('/api/v1/admin', isAdmin, adminRouter);

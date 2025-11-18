@@ -55,7 +55,7 @@ const Dashboard = () => {
     });
 
     setFilteredData(filtered); // Set filtered data based on search input and selected categories
-  }, [searchValue, selectedCategories, warranties, showSharedWarranties, showActiveWarranties, user.userId]);
+  }, [searchValue, selectedCategories, warranties, showSharedWarranties, showActiveWarranties, user.userId, user.email]);
 
   useEffect(() => {
     setContentLoader(true);
