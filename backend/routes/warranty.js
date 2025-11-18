@@ -16,14 +16,14 @@ const multer = require("multer");
 const router = express.Router();
 
 const upload = multer({
-  storage: multer.memoryStorage(), // Store file in memory for direct upload to S3
-  limits: { fileSize: 5 * 1024 * 1024 }, // limited file size to 5MB
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
 router.post("/addWarranty", upload.single("invoiceFile"), addWarranty);
 router.post("/uploadInvoice", uploadInvoice);
-router.get("/getAllWarrantyByUser/:addedBy", getAllWarrantyByUser); //userid
-router.get("/getWarrantyById/:id", getWarrantyById); //truckid
+router.get("/getAllWarrantyByUser/:addedBy", getAllWarrantyByUser);
+router.get("/getWarrantyById/:id", getWarrantyById);
 router.delete("/deleteWarrantyById/:id", deleteWarrantyById);
 router.get("/stats/:addedBy", getWarrantyStatsByUser);
 router.put(

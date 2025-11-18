@@ -106,7 +106,7 @@ SECRETKEY=secret
 MONGODB_URL=
 AWS_SECRET_ACCESS_KEY =
 AWS_ACCESS_KEY_ID =
-CORS_URLS = ['http://localhost:3000', 'https://managemytruck.me', 'https://www.managemytruck.me']
+CORS_URLS = ['http://localhost:3000']
 ```
 
 3️⃣ Setup Frontend
