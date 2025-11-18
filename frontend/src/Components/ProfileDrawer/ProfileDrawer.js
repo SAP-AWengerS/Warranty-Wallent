@@ -98,16 +98,17 @@ const ProfileDrawer = ({ profileOpen, setProfileOpen }) => {
       <div className="card" style={{ borderRadius: "6px" }}>
         <div className="card-body text-center">
           <div className="mt-3 mb-4">
-            <img
-              src={
-                user?.picture
-                  ? user.picture
-                  : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-              }
-              className="rounded-circle img-fluid"
-              style={{ width: "100px" }}
-              alt="User"
-            />
+          <img
+            src={
+              user?.picture
+                ? user.picture
+                : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+            }
+            referrerPolicy="no-referrer"
+            className="rounded-circle img-fluid"
+            style={{ width: "50px" }}
+            alt="User"
+          />
           </div>
           <h4 className="mb-2">{user?.name}</h4>
           <p className="text-muted mb-4">
