@@ -20,7 +20,12 @@ const NavBar = () => {
   return (
     <div className="mb-4">
       <Space className="p-3 pb-0 w-100 rounded-3 d-flex justify-content-between align-items-center">
-        <div>
+        <div className="d-flex align-items-center gap-2">
+          <img
+            src="/ww_logo.png"
+            alt="Warranty Wallet Logo"
+            style={{ height: "32px", width: "32px" }}
+          />
           <b className="fw-800 fs-3" style={{ color: "#00348a" }}>
             Warranty Wallet
           </b>
