@@ -24,7 +24,7 @@ const NavBar = () => {
           <img
             src="/ww_logo.png"
             alt="Warranty Wallet Logo"
-            style={{ height: "32px", width: "32px" }}
+            style={{ height: "40px" }}
           />
           <b className="fw-800 fs-3" style={{ color: "#00348a" }}>
             Warranty Wallet
