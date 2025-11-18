@@ -91,83 +91,298 @@ const ProfileDrawer = ({ profileOpen, setProfileOpen }) => {
       closable={false}
       onClose={onProfileClose}
       open={profileOpen}
-      style={{ padding: 0 }}
+      style={{
+        padding: 0,
+        background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)'
+      }}
       key={"right"}
       loading={loading}
+      width={350}
     >
-      <div className="card" style={{ borderRadius: "6px" }}>
-        <div className="card-body text-center">
-          <div className="mt-3 mb-4">
+      {/* Header with Logo */}
+      <div style={{
+        background: 'linear-gradient(135deg, #1890ff 0%, #096dd9 100%)',
+        padding: '20px',
+        textAlign: 'center',
+        color: 'white',
+        marginBottom: '20px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
           <img
-            src={
-              user?.picture
-                ? user.picture
-                : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-            }
-            referrerPolicy="no-referrer"
-            className="rounded-circle img-fluid"
-            style={{ width: "100px" }}
-            alt="User"
+            src="/ww_logo.png"
+            alt="Warranty Wallet"
+            style={{ width: '32px', height: '32px', marginRight: '10px' }}
           />
-          </div>
-          <h4 className="mb-2">{user?.name}</h4>
-          <p className="text-muted mb-4">
-            {/* 8547520864 <span className="mx-2">|</span>  */}
-            {user?.email}
-          </p>
-          <div className="mb-4 pb-2 d-flex flex-column gap-2">
-            <button
-              type="button"
-              className="btn btn-outline-primary btn-floating"
-              onClick={callGetHelpModal}
-            >
-              {/* <WechatOutlined /> */}
-              Get Help
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-primary btn-floating"
-              onClick={callPrivacyPolicyModal}
-            >
-              {/* <AlertFillIcon/> */}
-              Privacy Policy
-            </button>
-            <button
-              type="button"
-              className="btn btn-outline-primary btn-floating"
-              onClick={callAboutUsModal}
-            >
-              {/* <BookmarkFillIcon/> */}
-              About Us
-            </button>
-          </div>
-          <div className="d-flex flex-column">
-            <ConfirmModal
-              title="Confirm Action"
-              content="Are you sure you want to signout?"
-              onOk={handleOk}
-              onCancel={() => {}}
-            >
-              <button
-                type="button"
-                className="btn btn-danger btn-rounded btn-floating"
-              >
-                Logout
-              </button>
-            </ConfirmModal>
-          </div>
-          <Divider />
+          <h3 style={{ margin: 0, color: 'white', fontSize: '18px', fontWeight: '600' }}>
+            Warranty Wallet
+          </h3>
+        </div>
+        <div style={{ fontSize: '12px', opacity: 0.9 }}>
+          Your Digital Warranty Manager
         </div>
       </div>
-      <div className="w-100 d-flex justify-content-center mt-4">
-        <p style={{ color: "#808080", fontSize: 12 }}>Developed by AWengerS</p>
+
+      <div style={{ padding: '0 20px' }}>
+        {/* User Profile Section */}
+        <div style={{
+          background: 'white',
+          borderRadius: '16px',
+          padding: '24px',
+          textAlign: 'center',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          marginBottom: '20px',
+          border: '1px solid #f0f0f0'
+        }}>
+          <div style={{
+            position: 'relative',
+            display: 'inline-block',
+            marginBottom: '16px'
+          }}>
+            <img
+              src={
+                user?.picture
+                  ? user.picture
+                  : "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+              }
+              referrerPolicy="no-referrer"
+              style={{
+                width: "80px",
+                height: "80px",
+                borderRadius: "50%",
+                border: "4px solid #1890ff",
+                objectFit: "cover"
+              }}
+              alt="User"
+            />
+            <div style={{
+              position: 'absolute',
+              bottom: '0',
+              right: '0',
+              width: '20px',
+              height: '20px',
+              backgroundColor: '#52c41a',
+              borderRadius: '50%',
+              border: '2px solid white'
+            }}></div>
+          </div>
+
+          <h4 style={{
+            margin: '0 0 8px 0',
+            color: '#262626',
+            fontSize: '18px',
+            fontWeight: '600'
+          }}>
+            {user?.name}
+          </h4>
+
+          <p style={{
+            color: '#8c8c8c',
+            margin: 0,
+            fontSize: '14px',
+            padding: '8px 12px',
+            backgroundColor: '#f8f9fa',
+            borderRadius: '20px',
+            display: 'inline-block'
+          }}>
+            {user?.email}
+          </p>
+        </div>
+
+        {/* Menu Buttons */}
+        <div style={{ marginBottom: '20px' }}>
+          <div style={{
+            background: 'white',
+            borderRadius: '12px',
+            padding: '16px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            border: '1px solid #f0f0f0'
+          }}>
+            <button
+              type="button"
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                marginBottom: '8px',
+                border: 'none',
+                borderRadius: '8px',
+                backgroundColor: '#f6ffed',
+                color: '#52c41a',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start'
+              }}
+              onClick={callGetHelpModal}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#52c41a';
+                e.target.style.color = 'white';
+                e.target.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = '#f6ffed';
+                e.target.style.color = '#52c41a';
+                e.target.style.transform = 'translateY(0)';
+              }}
+            >
+              <span style={{ fontSize: '16px', marginRight: '12px' }}>🤝</span>
+              Get Help & Support
+            </button>
+
+            <button
+              type="button"
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                marginBottom: '8px',
+                border: 'none',
+                borderRadius: '8px',
+                backgroundColor: '#fff7e6',
+                color: '#d46b08',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start'
+              }}
+              onClick={callPrivacyPolicyModal}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#d46b08';
+                e.target.style.color = 'white';
+                e.target.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = '#fff7e6';
+                e.target.style.color = '#d46b08';
+                e.target.style.transform = 'translateY(0)';
+              }}
+            >
+              <span style={{ fontSize: '16px', marginRight: '12px' }}>🛡️</span>
+              Privacy Policy
+            </button>
+
+            <button
+              type="button"
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                marginBottom: '0',
+                border: 'none',
+                borderRadius: '8px',
+                backgroundColor: '#f0f5ff',
+                color: '#1890ff',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start'
+              }}
+              onClick={callAboutUsModal}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#1890ff';
+                e.target.style.color = 'white';
+                e.target.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = '#f0f5ff';
+                e.target.style.color = '#1890ff';
+                e.target.style.transform = 'translateY(0)';
+              }}
+            >
+              <span style={{ fontSize: '16px', marginRight: '12px' }}>ℹ️</span>
+              About Warranty Wallet
+            </button>
+          </div>
+        </div>
+
+        {/* Logout Section */}
+        <div style={{
+          background: 'white',
+          borderRadius: '12px',
+          padding: '16px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+          border: '1px solid #f0f0f0',
+          marginBottom: '20px'
+        }}>
+          <ConfirmModal
+            title="Confirm Logout"
+            content="Are you sure you want to sign out of your account?"
+            onOk={handleOk}
+            onCancel={() => {}}
+          >
+            <button
+              type="button"
+              style={{
+                width: '100%',
+                padding: '12px 16px',
+                border: 'none',
+                borderRadius: '8px',
+                backgroundColor: '#fff2f0',
+                color: '#f5222d',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#f5222d';
+                e.target.style.color = 'white';
+                e.target.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = '#fff2f0';
+                e.target.style.color = '#f5222d';
+                e.target.style.transform = 'translateY(0)';
+              }}
+            >
+              <span style={{ fontSize: '16px', marginRight: '8px' }}>🚪</span>
+              Sign Out
+            </button>
+          </ConfirmModal>
+        </div>
+
+        {/* Footer */}
+        <div style={{
+          textAlign: 'center',
+          padding: '16px',
+          backgroundColor: 'rgba(255,255,255,0.8)',
+          borderRadius: '8px',
+          marginBottom: '20px'
+        }}>
+          <div style={{
+            color: '#8c8c8c',
+            fontSize: '11px',
+            marginBottom: '4px'
+          }}>
+            Developed with ❤️ by
+          </div>
+          <div style={{
+            color: '#1890ff',
+            fontSize: '12px',
+            fontWeight: '600'
+          }}>
+            AWengerS Team
+          </div>
+        </div>
       </div>
+
       <FloatButton
         shape="circle"
-        type="dark"
+        type="primary"
         style={{
           insetInlineEnd: 16,
           top: 16,
+          backgroundColor: '#f5222d',
+          borderColor: '#f5222d'
         }}
         onClick={onProfileClose}
         icon={<CloseOutlined />}
