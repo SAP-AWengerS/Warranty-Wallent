@@ -52,7 +52,7 @@ describe("Warranty Controller", () => {
         .field("addedBy", "12345")
         .attach("invoiceFile", Buffer.from("mock file content"), "invoice.pdf");
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(201);
     });
 
     it("returns 404 if the user is not found", async () => {
@@ -73,7 +73,7 @@ describe("Warranty Controller", () => {
       expect(response.status).toBe(404);
     });
 
-    it("returns 404 if an error occurs during warranty creation", async () => {
+    it("returns 500 if an error occurs during warranty creation", async () => {
       jest.spyOn(User, "findOne").mockRejectedValue(new Error("Database error"));
 
       const response = await request(app)
@@ -88,7 +88,7 @@ describe("Warranty Controller", () => {
           addedBy: "12345",
         });
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(500);
     });
   });
 
@@ -110,7 +110,7 @@ describe("Warranty Controller", () => {
 
       const response = await request(app).get(`/api/v1/app/warranty/getWarrantyById/${mockWarranty._id}`);
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(200);
     });
 
     it("returns 404 if the warranty is not found", async () => {
@@ -126,7 +126,7 @@ describe("Warranty Controller", () => {
     it("returns 404 for an invalid warranty ID", async () => {
       const response = await request(app).get("/api/v1/app/warranty/getWarrantyById/invalid-id");
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(400);
     });
   });
 
@@ -139,7 +139,7 @@ describe("Warranty Controller", () => {
 
       const response = await request(app).delete(`/api/v1/app/warranty/deleteWarrantyById/${mockWarranty._id}`);
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(200);
     });
 
     it("returns 404 if the warranty to delete is not found", async () => {
@@ -153,7 +153,7 @@ describe("Warranty Controller", () => {
     it("returns 404 for an invalid warranty ID", async () => {
       const response = await request(app).delete("/api/v1/app/warranty/deleteWarrantyById/invalid-id");
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(400);
     });
   });
 
@@ -175,7 +175,7 @@ describe("Warranty Controller", () => {
 
       const response = await request(app).get("/api/v1/app/warranty/getAllWarrantyByUser/12345");
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(200);
     });
 
     it("returns 404 if user not found", async () => {
@@ -203,7 +203,7 @@ describe("Warranty Controller", () => {
         .post(`/api/v1/app/warranty/shareAccess/${mockWarranty._id}`)
         .send({ email: "target@example.com" });
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(200);
     });
 
     it("returns 404 if warranty not found", async () => {
@@ -231,7 +231,7 @@ describe("Warranty Controller", () => {
         .delete(`/api/v1/app/warranty/revokeAccess/${mockWarranty._id}`)
         .send({ email: "target@example.com" });
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(200);
     });
 
     it("returns 404 if warranty not found", async () => {
