@@ -17,7 +17,24 @@ pipeline {
             steps {
                 echo '🔄 Checking out code...'
                 checkout scm
-                githubNotify context: 'Jenkins CI', status: 'PENDING', description: 'Build started'
+                script {
+                    // Set GitHub status to pending if credentials are available
+                    try {
+                        sh '''
+                            if [ -n "$GITHUB_TOKEN" ]; then
+                                curl -s -X POST \
+                                  -H "Authorization: token $GITHUB_TOKEN" \
+                                  -H "Accept: application/vnd.github.v3+json" \
+                                  "https://api.github.com/repos/$GIT_URL/statuses/$GIT_COMMIT" \
+                                  -d '{"state":"pending","description":"Build started","context":"Jenkins CI"}' || echo "GitHub status update failed"
+                            else
+                                echo "No GitHub token available, skipping status update"
+                            fi
+                        '''
+                    } catch (Exception e) {
+                        echo "GitHub status update failed: ${e.getMessage()}"
+                    }
+                }
             }
         }
 
@@ -174,17 +191,65 @@ pipeline {
 
         success {
             echo '✅ Pipeline succeeded!'
-            githubNotify context: 'Jenkins CI', status: 'SUCCESS', description: 'Build passed'
+            script {
+                try {
+                    sh '''
+                        if [ -n "$GITHUB_TOKEN" ]; then
+                            curl -s -X POST \
+                              -H "Authorization: token $GITHUB_TOKEN" \
+                              -H "Accept: application/vnd.github.v3+json" \
+                              "https://api.github.com/repos/$GIT_URL/statuses/$GIT_COMMIT" \
+                              -d '{"state":"success","description":"Build passed","context":"Jenkins CI"}' || echo "GitHub status update failed"
+                        else
+                            echo "No GitHub token available, skipping status update"
+                        fi
+                    '''
+                } catch (Exception e) {
+                    echo "GitHub status update failed: ${e.getMessage()}"
+                }
+            }
         }
 
         failure {
             echo '❌ Pipeline failed!'
-            githubNotify context: 'Jenkins CI', status: 'FAILURE', description: 'Errors in build'
+            script {
+                try {
+                    sh '''
+                        if [ -n "$GITHUB_TOKEN" ]; then
+                            curl -s -X POST \
+                              -H "Authorization: token $GITHUB_TOKEN" \
+                              -H "Accept: application/vnd.github.v3+json" \
+                              "https://api.github.com/repos/$GIT_URL/statuses/$GIT_COMMIT" \
+                              -d '{"state":"failure","description":"Build failed","context":"Jenkins CI"}' || echo "GitHub status update failed"
+                        else
+                            echo "No GitHub token available, skipping status update"
+                        fi
+                    '''
+                } catch (Exception e) {
+                    echo "GitHub status update failed: ${e.getMessage()}"
+                }
+            }
         }
 
         unstable {
             echo '⚠️ Pipeline unstable!'
-            githubNotify context: 'Jenkins CI', status: 'ERROR', description: 'Unstable build'
+            script {
+                try {
+                    sh '''
+                        if [ -n "$GITHUB_TOKEN" ]; then
+                            curl -s -X POST \
+                              -H "Authorization: token $GITHUB_TOKEN" \
+                              -H "Accept: application/vnd.github.v3+json" \
+                              "https://api.github.com/repos/$GIT_URL/statuses/$GIT_COMMIT" \
+                              -d '{"state":"error","description":"Build unstable","context":"Jenkins CI"}' || echo "GitHub status update failed"
+                        else
+                            echo "No GitHub token available, skipping status update"
+                        fi
+                    '''
+                } catch (Exception e) {
+                    echo "GitHub status update failed: ${e.getMessage()}"
+                }
+            }
         }
 
         always {
