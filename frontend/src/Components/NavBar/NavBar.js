@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Divider, Space } from "antd";
 import { MenuFoldOutlined } from "@ant-design/icons";
 import { PersonIcon } from "@primer/octicons-react";
-// import ProfileDrawer from "../ProfileDrawer/ProfileDrawer";
+import ProfileDrawer from "../ProfileDrawer/ProfileDrawer";
 import NotificationDrawer from "../NotificationDrawer/NotificationDrawer";
 
 const NavBar = () => {
@@ -20,7 +20,12 @@ const NavBar = () => {
   return (
     <div className="mb-4">
       <Space className="p-3 pb-0 w-100 rounded-3 d-flex justify-content-between align-items-center">
-        <div>
+        <div className="d-flex align-items-center gap-2">
+          <img
+            src="/ww_logo.png"
+            alt="Warranty Wallet Logo"
+            style={{ height: "40px" }}
+          />
           <b className="fw-800 fs-3" style={{ color: "#00348a" }}>
             Warranty Wallet
           </b>
@@ -56,10 +61,10 @@ const NavBar = () => {
       </Space>
 
       <NotificationDrawer navOpen={navOpen} setNavOpen={setNavOpen} />
-      {/* <ProfileDrawer
+      <ProfileDrawer
         profileOpen={profileOpen}
         setProfileOpen={setProfileOpen}
-      /> */}
+      />
       <Divider
         style={{
           borderColor: "#ddd",
