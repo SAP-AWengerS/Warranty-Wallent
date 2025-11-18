@@ -157,20 +157,6 @@ const ProfileDrawer = ({ profileOpen, setProfileOpen }) => {
             </ConfirmModal>
           </div>
           <Divider />
-          {/* <div className="d-flex justify-content-between text-center mt-3 mb-2">
-            <div>
-              <p className="mb-2 h5">{metadata.totalTrucks}</p>
-              <p className="text-muted mb-0">Total Trucks</p>
-            </div>
-            <div className="px-3">
-              <p className="mb-2 h5">{metadata.totalKM}</p>
-              <p className="text-muted mb-0">Total KM</p>
-            </div>
-            <div>
-              <p className="mb-2 h5">{metadata.totalDays}</p>
-              <p className="text-muted mb-0">Total Days</p>
-            </div>
-          </div> */}
         </div>
       </div>
       <div className="w-100 d-flex justify-content-center mt-4">

@@ -416,6 +416,35 @@ const getExpiringWarrantiesByUser = async (req, res) => {
   }
 };
 
+// Get total and active warranties for a user
+const getWarrantyStatsByUser = async (req, res) => {
+  try {
+    const { addedBy } = req.params;
+
+    const user = await User.findOne({ googleId: addedBy });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const userEmail = user.email;
+
+    // Get all warranties (owned + shared)
+    const userWarranties = await Warranty.find({ addedBy });
+    const sharedWarranties = await Warranty.find({ sharedWith: userEmail });
+    const warranties = [...userWarranties, ...sharedWarranties];
+
+    const total = warranties.length;
+    const today = new Date();
+
+    // Active = not expired
+    const active = warranties.filter(w => new Date(w.expiresOn) >= today).length;
+
+    res.status(200).json({ total, active });
+  } catch (error) {
+    console.error("Error fetching warranty stats:", error);
+    res.status(500).json({ message: "Failed to fetch warranty stats", error: error.message });
+  }
+};
+
 module.exports = {
   addWarranty,
   getWarrantyById,
@@ -426,4 +455,5 @@ module.exports = {
   getExpiringWarrantiesByUser,
   shareAccess,
   revokeAccess,
+  getWarrantyStatsByUser,
 };
