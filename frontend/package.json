@@ -24,13 +24,22 @@
     "test": "react-scripts test",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "lint": "eslint src/**/*.{js,jsx,ts,tsx}"
+    "lint": "eslint src/**/*.{js,jsx}"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(axios)/)"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+      "\\.(gif|ttf|eot|svg|png)$": "test-file-stub"
+    }
   },
   "browserslist": {
     "production": [
@@ -45,7 +54,8 @@
     ]
   },
   "devDependencies": {
-    "typescript": "^4.9.5",
-    "eslint": "^8.57.0"
+    "eslint": "^8.57.0",
+    "identity-obj-proxy": "^3.0.0",
+    "typescript": "^4.9.5"
   }
 }

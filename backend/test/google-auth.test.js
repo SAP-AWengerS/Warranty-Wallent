@@ -117,7 +117,7 @@ describe("Google Authentication", () => {
         .send();
 
       expect(response.status).toBe(401);
-      expect(response.body.message).toBe("Google authentication failed");
+      expect(response.body.message).toBe("Google authentication failed: Invalid token");
     });
 
     it("returns 400 if Google payload is invalid", async () => {

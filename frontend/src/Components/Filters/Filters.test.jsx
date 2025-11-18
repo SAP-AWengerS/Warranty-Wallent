@@ -1,6 +1,16 @@
+import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom';
 import Filters from "./Filters";
+import { UserContext } from "../../App";
+import { Axios } from "../../Config/Axios/Axios";
+
+// Mock Axios
+jest.mock("../../Config/Axios/Axios", () => ({
+  Axios: {
+    get: jest.fn(),
+  },
+}));
 
 // Mock WarrantyDetailsModal
 jest.mock("../WarrantyDetailsModal/WarrantyDetailsModal", () => {
@@ -21,13 +31,36 @@ describe("Filters Component", () => {
   const mockSetSearchValue = jest.fn();
   const mockSetSelectedCategories = jest.fn();
   const mockSetWarranty = jest.fn();
+  const mockUser = {
+    userId: "12345",
+    email: "test@example.com",
+    name: "Test User"
+  };
 
+  // Mock localStorage
   beforeEach(() => {
     jest.clearAllMocks();
+    Storage.prototype.getItem = jest.fn(() => "mock-token");
+
+    // Setup Axios mock
+    Axios.get.mockResolvedValue({
+      data: {
+        total: 5,
+        active: 3,
+      }
+    });
   });
 
+  const renderWithContext = (component) => {
+    return render(
+      <UserContext.Provider value={{ user: mockUser }}>
+        {component}
+      </UserContext.Provider>
+    );
+  };
+
   test("renders input and icons", () => {
-    render(
+    renderWithContext(
       <Filters
         setSearchValue={mockSetSearchValue}
         setSelectedCategories={mockSetSelectedCategories}
@@ -43,7 +76,7 @@ describe("Filters Component", () => {
   });
 
   test("calls setSearchValue when typing", () => {
-    render(
+    renderWithContext(
       <Filters
         setSearchValue={mockSetSearchValue}
         setSelectedCategories={mockSetSelectedCategories}
@@ -58,7 +91,7 @@ describe("Filters Component", () => {
   });
 
   test("renders category buttons", () => {
-    render(
+    renderWithContext(
       <Filters
         setSearchValue={mockSetSearchValue}
         setSelectedCategories={mockSetSelectedCategories}
