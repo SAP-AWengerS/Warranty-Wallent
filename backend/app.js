@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors')
+const setupSwagger = require('./swagger');
 
 // middleware handlers
 const { error } = require('./utils/error');
@@ -19,6 +20,9 @@ const warrantyRouter = require('./routes/warranty');
 
 // express app
 const app = express();
+
+// setup swagger documentation
+setupSwagger(app);
 
 // middlewares
 app.use(cors())

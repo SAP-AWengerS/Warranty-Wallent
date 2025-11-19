@@ -121,7 +121,53 @@ This section guides you through submitting suggestions for **new features or imp
 
 3. Make your changes (frontend in client/, backend in server/).
 
-4. **Write/Update Tests** (Required for frontend contributions)
+4. **Update API Documentation** (Required for backend contributions)
+
+   If you're adding or modifying backend API endpoints:
+
+   ```bash
+   cd backend
+   ```
+
+   - Add/update Swagger JSDoc annotations in route files (`routes/*.js`)
+   - Follow the existing annotation pattern for consistency
+   - Include all request parameters, body schemas, and response formats
+   - Add example values for clarity
+
+   **Swagger Documentation Requirements:**
+   - All new endpoints must have complete Swagger annotations
+   - Update existing annotations if changing endpoint behavior
+   - Test your documentation in Swagger UI (`http://localhost:8000/api-docs`)
+   - Include authentication requirements where applicable
+
+   **Example Swagger Annotation:**
+   ```javascript
+   /**
+    * @swagger
+    * /api/v1/app/warranty/addWarranty:
+    *   post:
+    *     summary: Add a new warranty
+    *     tags: [Warranties]
+    *     requestBody:
+    *       required: true
+    *       content:
+    *         application/json:
+    *           schema:
+    *             type: object
+    *             properties:
+    *               itemName:
+    *                 type: string
+    *                 example: iPhone 14 Pro
+    *     responses:
+    *       201:
+    *         description: Warranty added successfully
+    */
+   router.post("/addWarranty", addWarranty);
+   ```
+
+   For detailed API documentation guidelines, see [backend/SWAGGER_API_DOCS.md](backend/SWAGGER_API_DOCS.md).
+
+5. **Write/Update Tests** (Required for frontend contributions)
    ```bash
    cd frontend
 
@@ -134,6 +180,19 @@ This section guides you through submitting suggestions for **new features or imp
 
    # Ensure test coverage remains high
    npm test -- --coverage --watchAll=false
+   ```
+
+   **Backend API Testing:**
+   ```bash
+   cd backend
+
+   # Run all backend tests
+   npm test
+
+   # Test your changes via Swagger UI
+   # 1. Start the server: npm start
+   # 2. Navigate to: http://localhost:8000/api-docs
+   # 3. Test your endpoints interactively
    ```
 
    **Testing Requirements:**
@@ -167,6 +226,36 @@ You can help by:
 - Fixing typos or broken links.
 - Adding setup examples, screenshots, or diagrams.
 - Enhancing instructions in README.md or adding new guides under /docs.
+- **Updating API documentation** in `backend/SWAGGER_API_DOCS.md`
+- **Adding Swagger annotations** for new or modified API endpoints
+- Improving code comments and inline documentation
+
+### API Documentation
+
+The project uses **Swagger/OpenAPI 3.0** for API documentation. When contributing to the backend:
+
+**For New Endpoints:**
+1. Add complete Swagger JSDoc annotations above the route definition
+2. Include all parameters, request bodies, and responses
+3. Provide example values and descriptions
+4. Test the documentation in Swagger UI
+
+**For Existing Endpoints:**
+1. Update annotations if changing behavior
+2. Keep descriptions clear and accurate
+3. Maintain consistency with existing documentation style
+
+**Documentation Files:**
+- `backend/swagger.js` - Main Swagger configuration
+- `backend/SWAGGER_API_DOCS.md` - Comprehensive API usage guide
+- `backend/routes/*.js` - JSDoc annotations for each endpoint
+
+**Testing Your Documentation:**
+```bash
+cd backend
+npm start
+# Visit http://localhost:8000/api-docs
+```
 
 Submit these improvements just like any other code contribution (via a PR).
 
@@ -177,6 +266,50 @@ Submit these improvements just like any other code contribution (via a PR).
 - Use Prettier and ESLint for formatting and linting.
 - Follow standard React/Node.js conventions.
 - Use clear, self-documenting variable names.
+
+### API Documentation Style
+
+When writing Swagger/JSDoc annotations:
+
+**DO:**
+- ✅ Use clear, descriptive summaries
+- ✅ Include all required and optional parameters
+- ✅ Provide realistic example values
+- ✅ Document all possible response codes
+- ✅ Specify authentication requirements
+- ✅ Use proper HTTP methods (GET, POST, PUT, DELETE)
+- ✅ Group related endpoints with tags
+
+**DON'T:**
+- ❌ Leave endpoints undocumented
+- ❌ Use vague descriptions like "does something"
+- ❌ Forget to update docs when changing endpoints
+- ❌ Skip response schemas
+- ❌ Use inconsistent naming conventions
+
+**Example:**
+```javascript
+/**
+ * @swagger
+ * /api/v1/app/warranty/{id}:
+ *   get:
+ *     summary: Get warranty by ID
+ *     tags: [Warranties]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Warranty ID
+ *         example: 507f1f77bcf86cd799439011
+ *     responses:
+ *       200:
+ *         description: Warranty retrieved successfully
+ *       404:
+ *         description: Warranty not found
+ */
+```
 
 ### Testing Guidelines
 
@@ -250,4 +383,3 @@ Thank you for helping us make warranty management effortless and open-source for
 1. Copy the entire block above.
 2. Paste it into a new file in your repo: `/CONTRIBUTING.md`.
 3. Commit and push — GitHub will automatically link it on the repository page.
-

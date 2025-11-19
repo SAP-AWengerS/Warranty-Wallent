@@ -72,6 +72,7 @@ https://github.com/user-attachments/assets/a9ca8722-56e1-4e30-bff1-03dcc713b134
 | **Frontend** | React, Ant Design, Bootstrap |
 | **Backend** | Node.js, Express |
 | **Database** | MongoDB |
+| **API Documentation** | Swagger/OpenAPI 3.0 |
 | **Testing** | Jest, React Testing Library |
 | **Cloud & Hosting** | AWS EC2, AWS S3, AWS SNS, Vercel, Render |
 | **Language** | JavaScript (ES6) |
@@ -130,7 +131,57 @@ Your app will now be running at:
 ```
 Frontend → http://localhost:3000
 Backend → http://localhost:8000
+API Documentation (Swagger) → http://localhost:8000/api-docs
 ```
+
+---
+
+## 📚 API Documentation
+
+The backend API is fully documented using **Swagger/OpenAPI 3.0 specification**.
+
+### Accessing API Documentation
+
+Once the backend server is running, access the interactive API documentation at:
+
+```
+http://localhost:8000/api-docs
+```
+
+### Features
+
+- **Interactive Testing**: Test all API endpoints directly from your browser
+- **Complete Schemas**: Detailed request/response models with examples
+- **Authentication Support**: Built-in token authentication for testing secured endpoints
+- **File Upload Testing**: Test file uploads for warranty invoices
+- **Endpoint Categories**:
+  - 🔐 Authentication (Login, Signup, Google OAuth)
+  - 👤 User Management
+  - 📋 Warranty Operations (CRUD, Stats, Sharing)
+  - 🛡️ Admin Operations
+
+### Documentation Files
+
+- `backend/SWAGGER_API_DOCS.md` - Comprehensive guide for using the API documentation
+- `backend/swagger.js` - Swagger configuration and schema definitions
+- Route files contain JSDoc annotations for automatic documentation generation
+
+### Quick Example
+
+```bash
+# Login to get authentication token
+curl -X POST "http://localhost:8000/api/v1/app/auth/logIn" \
+  -H "Content-Type: application/json" \
+  -d '{"email": "user@example.com", "password": "password123"}'
+
+# Use token to access protected endpoints
+curl -X GET "http://localhost:8000/api/v1/app/users/getMyProfile" \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+```
+
+For detailed API documentation, examples, and troubleshooting, see [backend/SWAGGER_API_DOCS.md](backend/SWAGGER_API_DOCS.md).
+
+---
 
 ## 🧪 Running Tests
 
@@ -233,34 +284,17 @@ warranty-wallet/
 │   └── package.json
 │
 ├── backend/            # Node.js + Express backend
-│   ├── routes/
-│   ├── controllers/
-│   ├── models/
+│   ├── routes/         # API route definitions with Swagger annotations
+│   ├── controllers/    # Business logic handlers
+│   ├── models/         # MongoDB schemas
+│   ├── swagger.js      # Swagger/OpenAPI configuration
+│   ├── SWAGGER_API_DOCS.md  # API documentation guide
 │   └── package.json
 │
 ├── LICENSE
-├── CONTRIBUTING.md
+├── CONTRIBUTING.md     # Contribution guidelines (includes API docs)
 ├── CODE_OF_CONDUCT.md
-└── README.md
-
-```
-```
-warranty-wallet/
-│
-├── client/             # React + Ant Design frontend
-│   ├── src/
-│   ├── public/
-│   └── package.json
-│
-├── server/             # Node.js + Express backend
-│   ├── routes/
-│   ├── controllers/
-│   ├── models/
-│   └── package.json
-│
-├── LICENSE
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
+├── TESTING.md
 └── README.md
 
 ```
@@ -342,4 +376,3 @@ This project is licensed under the MIT License. You’re free to use, modify, an
 
 
 <p align="center"> Made with ❤️ by <b>Team AWengerS</b>
-
