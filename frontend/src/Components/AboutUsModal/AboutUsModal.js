@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { Modal } from "antd";
 
-const AboutUsModal = forwardRef(({}, ref) => {
+const AboutUsModal = forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => setIsModalOpen(true);

@@ -1,6 +1,5 @@
 import { MessageTwoTone } from "@ant-design/icons";
 import React from "react";
-import { Axios } from "../../Config/Axios/Axios";
 
 const NotificationCard = ({notification}) => {
   return (

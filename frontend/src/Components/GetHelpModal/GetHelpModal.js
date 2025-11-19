@@ -1,9 +1,8 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import { MailIcon } from "@primer/octicons-react";
-import { Link } from "react-router-dom";
 
-const GetHelpModal = forwardRef(({}, ref) => {
+const GetHelpModal = forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
