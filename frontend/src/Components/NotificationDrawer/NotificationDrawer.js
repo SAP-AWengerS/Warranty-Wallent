@@ -1,13 +1,11 @@
-import { Divider, Drawer, FloatButton } from "antd";
+import { Drawer, FloatButton } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import React, { useContext, useEffect, useState } from "react";
-import { VersionsIcon } from "@primer/octicons-react";
 import NotificationCard from "../NotificationCard/NotificationCard";
 import { UserContext } from "../../App";
 import { Axios } from "../../Config/Axios/Axios";
 
 const NotificationDrawer = ({ navOpen, setNavOpen }) => {
-  const [isError, setIsError] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const onNavClose = () => {
     setNavOpen(false);
@@ -35,12 +33,12 @@ const NotificationDrawer = ({ navOpen, setNavOpen }) => {
         console.log(res);
       })
       .catch((err) => {
-        setIsError(true);
+        console.error("Error fetching notifications:", err);
         // setContentLoader(false);
       });
 
     return () => {};
-  }, []);
+  }, [token, user.userId]);
 
   return (
     <Drawer

@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { Modal } from "antd";
 
-const PrivacyPolicyModal = forwardRef(({}, ref) => {
+const PrivacyPolicyModal = forwardRef((props, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
