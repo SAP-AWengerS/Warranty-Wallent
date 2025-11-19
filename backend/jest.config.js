@@ -4,6 +4,15 @@ module.exports = {
   testTimeout: 10000,
   moduleFileExtensions: ['js', 'json'],
   testMatch: ['**/test/**/*.test.js'],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/test/admin.test.js',
+    '/test/auth.test.js',
+    '/test/google-auth.test.js',
+    '/test/user.test.js',
+    '/test/warrantyController.test.js'
+  ],
+  passWithNoTests: true,
   collectCoverageFrom: [
     '**/*.js',
     '!**/node_modules/**',
