@@ -58,6 +58,15 @@ const WarrantyDetailsModal = forwardRef(
         )
           .then((res) => {
             setWarranty(res.data);
+            // Update form fields with the fetched warranty data
+            form.setFieldsValue({
+              category: res.data.category,
+              itemName: res.data.itemName,
+              purchasedOn: moment(res.data.purchasedOn).format("YYYY-MM-DD"),
+              expiresOn: moment(res.data.expiresOn).format("YYYY-MM-DD"),
+              description: res.data.description,
+              warrantyProvider: res.data.warrantyProvider,
+            });
             setLoading(false);
           })
           .catch((err) => {
@@ -65,9 +74,13 @@ const WarrantyDetailsModal = forwardRef(
             console.error('Error fetching warranty details:', err);
             setLoading(false);
           });
+      } else {
+        // Reset form and warranty state when opening modal for a new entry
+        setWarranty({});
+        form.resetFields();
+        setLoading(false);
       }
-      setLoading(false);
-    }, [warrantyDetails]);
+    }, [warrantyDetails, form]);
 
     const showLoading = () => {
       setOpen(true);
@@ -278,7 +291,6 @@ const WarrantyDetailsModal = forwardRef(
           open={open}
           onCancel={() => {
             setOpen(false);
-            // Error state reset (no longer used)
           }}
           loading={loading}
         >
