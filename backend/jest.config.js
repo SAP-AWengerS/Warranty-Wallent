@@ -2,7 +2,6 @@ module.exports = {
   testEnvironment: 'node',
   setupFilesAfterEnv: [],
   testTimeout: 10000,
-  // Ensure proper module resolution
   moduleFileExtensions: ['js', 'json'],
   testMatch: ['**/test/**/*.test.js'],
   collectCoverageFrom: [
@@ -11,4 +10,16 @@ module.exports = {
     '!**/coverage/**',
     '!jest.config.js'
   ],
+  testEnvironmentOptions: {
+    node: {
+      global: {
+        Buffer: Buffer
+      }
+    }
+  },
+  globals: {
+    'ts-jest': {
+      isolatedModules: true
+    }
+  }
 };
