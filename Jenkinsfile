@@ -1,5 +1,6 @@
-// Function to update GitHub commit status using API
+// Function to update GitHub commit status using Checks API
 // Requires GitHub credentials stored in Jenkins with ID 'GITHUB_TOKEN'
+// The token needs 'checks:write' permission
 def updateGitHubStatus(String state, String description) {
     try {
         // Get repository info from GIT_URL
@@ -8,12 +9,96 @@ def updateGitHubStatus(String state, String description) {
         def repo = repoInfo[1].replace('.git', '')
         def commit = env.GIT_COMMIT
 
-        echo "Updating GitHub status: ${state} - ${description}"
+        echo "Updating GitHub check: ${state} - ${description}"
+        echo "Repository: ${owner}/${repo}"
+        echo "Commit SHA: ${commit}"
+
+        // Map Jenkins states to GitHub Checks API conclusions
+        def (conclusion, checkStatus, summary) = mapStateToCheck(state, description)
 
         // Use GitHub credentials if available
         withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
-            sh """
-                curl -X POST \
+            // Create or update a check run using GitHub Checks API
+            def timestamp = new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone('UTC'))
+
+            def checkData = [
+                name: 'Jenkins CI',
+                head_sha: commit,
+                status: checkStatus,
+                started_at: timestamp,
+                details_url: env.BUILD_URL
+            ]
+
+            if (conclusion) {
+                checkData.conclusion = conclusion
+                checkData.completed_at = timestamp
+            }
+
+            checkData.output = [
+                title: description,
+                summary: summary
+            ]
+
+            def jsonPayload = groovy.json.JsonOutput.toJson(checkData)
+
+            def response = sh(
+                script: """
+                    curl -s -X POST \
+                    -H "Authorization: token \${GITHUB_TOKEN}" \
+                    -H "Accept: application/vnd.github.v3+json" \
+                    https://api.github.com/repos/${owner}/${repo}/check-runs \
+                    -d '${jsonPayload}' \
+                    -w "\\nHTTP_STATUS:%{http_code}"
+                """,
+                returnStdout: true,
+                returnStatus: false
+            ).trim()
+
+            if (response.contains('HTTP_STATUS:201') || response.contains('HTTP_STATUS:200')) {
+                echo "✓ GitHub check updated successfully"
+            } else {
+                echo "⚠️ GitHub check update response: ${response}"
+                // Fall back to Status API if Checks API fails
+                fallbackToStatusAPI(owner, repo, commit, state, description)
+            }
+        }
+    } catch (Exception e) {
+        echo "⚠️ Could not update GitHub check: ${e.getMessage()}"
+        // Try fallback to Status API
+        try {
+            def repoInfo = env.GIT_URL.tokenize('/').takeRight(2)
+            def owner = repoInfo[0].replace('.git', '')
+            def repo = repoInfo[1].replace('.git', '')
+            fallbackToStatusAPI(owner, repo, env.GIT_COMMIT, state, description)
+        } catch (Exception fallbackError) {
+            echo "⚠️ Fallback also failed: ${fallbackError.getMessage()}"
+        }
+    }
+}
+
+// Helper function to map Jenkins states to GitHub Checks API format
+def mapStateToCheck(String state, String description) {
+    switch(state) {
+        case 'pending':
+            return [null, 'in_progress', "Build in progress: ${description}"]
+        case 'success':
+            return ['success', 'completed', "✓ ${description}"]
+        case 'failure':
+            return ['failure', 'completed', "✗ ${description}"]
+        case 'error':
+            return ['failure', 'completed', "✗ ${description}"]
+        default:
+            return ['neutral', 'completed', description]
+    }
+}
+
+// Fallback to Status API for compatibility
+def fallbackToStatusAPI(String owner, String repo, String commit, String state, String description) {
+    echo "Falling back to Status API..."
+    withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
+        sh(
+            script: """
+                curl -s -X POST \
                 -H "Authorization: token \${GITHUB_TOKEN}" \
                 -H "Accept: application/vnd.github.v3+json" \
                 https://api.github.com/repos/${owner}/${repo}/statuses/${commit} \
@@ -23,12 +108,10 @@ def updateGitHubStatus(String state, String description) {
                     "description": "${description}",
                     "context": "Jenkins CI"
                 }'
-            """
-        }
-        echo "✓ GitHub status updated successfully"
-    } catch (Exception e) {
-        echo "⚠️ Could not update GitHub status: ${e.getMessage()}"
-        echo "Make sure 'GITHUB_TOKEN' credential is configured in Jenkins"
+            """,
+            returnStdout: false
+        )
+        echo "✓ Status API fallback completed"
     }
 }
 
