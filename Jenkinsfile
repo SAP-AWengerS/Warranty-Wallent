@@ -9,23 +9,60 @@ def updateGitHubStatus(String state, String description) {
         def commit = env.GIT_COMMIT
 
         echo "Updating GitHub status: ${state} - ${description}"
+        echo "Repository: ${owner}/${repo}"
+        echo "Commit SHA: ${commit}"
+
+        // Check if this is a PR build
+        if (env.CHANGE_ID) {
+            echo "ℹ️ This is a PR build (PR #${env.CHANGE_ID})"
+
+            // For PR builds, check if commit exists in target repo
+            // If it fails, it might be from a fork
+            def commitCheckStatus = sh(
+                script: """
+                    curl -s -o /dev/null -w "%{http_code}" \
+                    -H "Accept: application/vnd.github.v3+json" \
+                    https://api.github.com/repos/${owner}/${repo}/commits/${commit}
+                """,
+                returnStdout: true
+            ).trim()
+
+            if (commitCheckStatus != "200") {
+                echo "⚠️ Commit ${commit} not found in ${owner}/${repo}"
+                echo "This PR might be from a forked repository."
+                echo "Skipping GitHub status update to avoid API errors."
+                echo "Consider using GitHub Checks API or GitHub Actions for fork PRs."
+                return
+            }
+        }
 
         // Use GitHub credentials if available
         withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
-            sh """
-                curl -X POST \
-                -H "Authorization: token \${GITHUB_TOKEN}" \
-                -H "Accept: application/vnd.github.v3+json" \
-                https://api.github.com/repos/${owner}/${repo}/statuses/${commit} \
-                -d '{
-                    "state": "${state}",
-                    "target_url": "${env.BUILD_URL}",
-                    "description": "${description}",
-                    "context": "Jenkins CI"
-                }'
-            """
+            def response = sh(
+                script: """
+                    curl -X POST \
+                    -H "Authorization: token \${GITHUB_TOKEN}" \
+                    -H "Accept: application/vnd.github.v3+json" \
+                    https://api.github.com/repos/${owner}/${repo}/statuses/${commit} \
+                    -d '{
+                        "state": "${state}",
+                        "target_url": "${env.BUILD_URL}",
+                        "description": "${description}",
+                        "context": "Jenkins CI"
+                    }' \
+                    -w "\\nHTTP_STATUS:%{http_code}"
+                """,
+                returnStdout: true
+            ).trim()
+
+            echo "API Response: ${response}"
+
+            if (response.contains('HTTP_STATUS:201') || response.contains('HTTP_STATUS:200')) {
+                echo "✓ GitHub status updated successfully"
+            } else {
+                echo "⚠️ GitHub status update may have failed"
+            }
         }
-        echo "✓ GitHub status updated successfully"
     } catch (Exception e) {
         echo "⚠️ Could not update GitHub status: ${e.getMessage()}"
         echo "Make sure 'GITHUB_TOKEN' credential is configured in Jenkins"
