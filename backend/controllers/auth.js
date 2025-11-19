@@ -5,7 +5,7 @@ const User = require("../models/user-model");
 const ErrorHandler = require("../middleware/errorHandlers");
 const { catchAsyncError } = require("../middleware/catchAsyncError");
 
-// Create OAuth2Client instance
+//Create OAuth2Client instance
 let client;
 try {
   client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
