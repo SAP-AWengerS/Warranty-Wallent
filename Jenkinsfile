@@ -1,3 +1,37 @@
+// Function to update GitHub commit status using API
+// Requires GitHub credentials stored in Jenkins with ID 'GITHUB_TOKEN'
+def updateGitHubStatus(String state, String description) {
+    try {
+        // Get repository info from GIT_URL
+        def repoInfo = env.GIT_URL.tokenize('/').takeRight(2)
+        def owner = repoInfo[0].replace('.git', '')
+        def repo = repoInfo[1].replace('.git', '')
+        def commit = env.GIT_COMMIT
+
+        echo "Updating GitHub status: ${state} - ${description}"
+
+        // Use GitHub credentials if available
+        withCredentials([string(credentialsId: 'GITHUB_TOKEN', variable: 'GITHUB_TOKEN')]) {
+            sh """
+                curl -X POST \
+                -H "Authorization: token \${GITHUB_TOKEN}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                https://api.github.com/repos/${owner}/${repo}/statuses/${commit} \
+                -d '{
+                    "state": "${state}",
+                    "target_url": "${env.BUILD_URL}",
+                    "description": "${description}",
+                    "context": "Jenkins CI"
+                }'
+            """
+        }
+        echo "✓ GitHub status updated successfully"
+    } catch (Exception e) {
+        echo "⚠️ Could not update GitHub status: ${e.getMessage()}"
+        echo "Make sure 'GITHUB_TOKEN' credential is configured in Jenkins"
+    }
+}
+
 pipeline {
     agent any
 
@@ -170,40 +204,6 @@ pipeline {
                 echo '📦 Archiving build artifacts...'
                 archiveArtifacts artifacts: "${FRONTEND_DIR}/build/**/*", allowEmptyArchive: true
             }
-        }
-    }
-
-    // Function to update GitHub commit status using API
-    // Requires GitHub credentials stored in Jenkins with ID 'github-token'
-    def updateGitHubStatus(String state, String description) {
-        try {
-            // Get repository info from GIT_URL
-            def repoInfo = env.GIT_URL.tokenize('/').takeRight(2)
-            def owner = repoInfo[0].replace('.git', '')
-            def repo = repoInfo[1].replace('.git', '')
-            def commit = env.GIT_COMMIT
-
-            echo "Updating GitHub status: ${state} - ${description}"
-
-            // Use GitHub credentials if available
-            withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
-                sh """
-                    curl -X POST \
-                    -H "Authorization: token \${GITHUB_TOKEN}" \
-                    -H "Accept: application/vnd.github.v3+json" \
-                    https://api.github.com/repos/${owner}/${repo}/statuses/${commit} \
-                    -d '{
-                        "state": "${state}",
-                        "target_url": "${env.BUILD_URL}",
-                        "description": "${description}",
-                        "context": "Jenkins CI"
-                    }'
-                """
-            }
-            echo "✓ GitHub status updated successfully"
-        } catch (Exception e) {
-            echo "⚠️ Could not update GitHub status: ${e.getMessage()}"
-            echo "Make sure 'github-token' credential is configured in Jenkins"
         }
     }
 
