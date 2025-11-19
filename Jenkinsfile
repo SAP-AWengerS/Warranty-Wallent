@@ -18,16 +18,8 @@ pipeline {
                 echo '🔄 Checking out code...'
                 checkout scm
                 script {
-                    // Set GitHub status to pending using Jenkins plugin
-                    try {
-                        // Using githubNotify step from GitHub plugin
-                        githubNotify context: 'Jenkins CI',
-                                     description: 'Build started',
-                                     status: 'PENDING'
-                    } catch (Exception e) {
-                        echo "GitHub status update not available: ${e.getMessage()}"
-                        echo "Install GitHub plugin or configure GitHub webhook for status updates"
-                    }
+                    // Notify GitHub about build status using GitHub Status API
+                    updateGitHubStatus('pending', 'Build started')
                 }
             }
         }
@@ -181,44 +173,60 @@ pipeline {
         }
     }
 
+    // Function to update GitHub commit status using API
+    // Requires GitHub credentials stored in Jenkins with ID 'github-token'
+    def updateGitHubStatus(String state, String description) {
+        try {
+            // Get repository info from GIT_URL
+            def repoInfo = env.GIT_URL.tokenize('/').takeRight(2)
+            def owner = repoInfo[0].replace('.git', '')
+            def repo = repoInfo[1].replace('.git', '')
+            def commit = env.GIT_COMMIT
+
+            echo "Updating GitHub status: ${state} - ${description}"
+
+            // Use GitHub credentials if available
+            withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
+                sh """
+                    curl -X POST \
+                    -H "Authorization: token \${GITHUB_TOKEN}" \
+                    -H "Accept: application/vnd.github.v3+json" \
+                    https://api.github.com/repos/${owner}/${repo}/statuses/${commit} \
+                    -d '{
+                        "state": "${state}",
+                        "target_url": "${env.BUILD_URL}",
+                        "description": "${description}",
+                        "context": "Jenkins CI"
+                    }'
+                """
+            }
+            echo "✓ GitHub status updated successfully"
+        } catch (Exception e) {
+            echo "⚠️ Could not update GitHub status: ${e.getMessage()}"
+            echo "Make sure 'github-token' credential is configured in Jenkins"
+        }
+    }
+
     post {
 
         success {
             echo '✅ Pipeline succeeded!'
             script {
-                try {
-                    githubNotify context: 'Jenkins CI',
-                                 description: 'Build passed',
-                                 status: 'SUCCESS'
-                } catch (Exception e) {
-                    echo "GitHub status update not available: ${e.getMessage()}"
-                }
+                updateGitHubStatus('success', 'Build passed')
             }
         }
 
         failure {
             echo '❌ Pipeline failed!'
             script {
-                try {
-                    githubNotify context: 'Jenkins CI',
-                                 description: 'Build failed',
-                                 status: 'FAILURE'
-                } catch (Exception e) {
-                    echo "GitHub status update not available: ${e.getMessage()}"
-                }
+                updateGitHubStatus('failure', 'Build failed')
             }
         }
 
         unstable {
             echo '⚠️ Pipeline unstable!'
             script {
-                try {
-                    githubNotify context: 'Jenkins CI',
-                                 description: 'Build unstable',
-                                 status: 'ERROR'
-                } catch (Exception e) {
-                    echo "GitHub status update not available: ${e.getMessage()}"
-                }
+                updateGitHubStatus('error', 'Build unstable')
             }
         }
 
