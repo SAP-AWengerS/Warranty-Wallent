@@ -9,6 +9,7 @@ pipeline {
         FRONTEND_DIR = 'frontend'
         BACKEND_DIR = 'backend'
         NODE_ENV = 'test'
+        GITHUB_TOKEN = credentials('GITHUB_TOKEN')
     }
 
     stages {
