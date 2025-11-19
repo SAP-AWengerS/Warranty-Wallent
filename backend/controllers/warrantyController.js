@@ -1,7 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const Warranty = require("../models/warranty-model");
 const aws = require("aws-sdk");
-const multer = require("multer");
 const User = require("../models/user-model");
 
 const s3 = new aws.S3({
@@ -31,9 +30,9 @@ const addWarranty = async (req, res) => {
       itemName = '',
       category = '',
       warrantyProvider = '',
-      purchasedOn = null,  
-      expiresOn = null,   
-      createdAt = new Date(), 
+      purchasedOn = null,
+      expiresOn = null,
+      createdAt = new Date(),
       description = '',
       addedBy = '',
     } = req.body;
@@ -74,7 +73,7 @@ const addWarranty = async (req, res) => {
       message: "Warranty added successfully",
       warranties,
     });
-    
+
   } catch (error) {
     console.error("Error adding warranty:", error);
     res.status(500).json({ message: "Failed to add warranty", error: error.message });
@@ -301,7 +300,7 @@ const updateWarrantyById = async (req, res) => {
     }
 
     console.log(req.body);
-    
+
 
     // Update the invoice URL if a new file is provided
     let invoiceURL = req.body.invoiceURL;
@@ -335,7 +334,7 @@ const updateWarrantyById = async (req, res) => {
     res.status(200).json({
       message: "Warranty updated successfully",
       warranty:updatedWarranty,
-      warranties   
+      warranties
     });
   } catch (error) {
     console.error("Error updating warranty:", error);
@@ -373,7 +372,7 @@ const deleteWarrantyById = async (req, res) => {
 const getExpiringWarrantiesByUser = async (req, res) => {
   try {
     const { addedBy } = req.params;
-    
+
     const today = new Date();
     const tenDaysLater = new Date(today);
     tenDaysLater.setDate(today.getDate() + 10);
