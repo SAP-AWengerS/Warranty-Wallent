@@ -205,8 +205,12 @@ module.exports.signUp = async (req, res, next) => {
 };
 
 module.exports.logOut = catchAsyncError(async (req, res, next) => {
-  try {
-  } catch (error) {}
+  // Logout logic can be implemented here if needed
+  // For JWT-based auth, logout is typically handled on the client side
+  res.status(200).json({
+    code: 200,
+    message: "Logout successful",
+  });
 });
 
 module.exports.changePassword = catchAsyncError(async (req, res, next) => {

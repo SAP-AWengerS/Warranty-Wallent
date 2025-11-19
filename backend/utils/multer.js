@@ -10,7 +10,8 @@ module.exports.uploadFile = (fileId,loc="./public/general/") => multer({
             }
         },
         filename: (req, file, cb) => {
-            cb(null, Date.now() + "." + (ext = file.originalname.split(".").pop()))
+            const ext = file.originalname.split(".").pop();
+            cb(null, Date.now() + "." + ext)
         }
     })
 }).single(fileId);
