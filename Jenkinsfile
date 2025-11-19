@@ -23,10 +23,12 @@ pipeline {
                     try {
                         sh '''
                             if [ -n "$GITHUB_TOKEN" ]; then
+                                # Extract owner/repo from GIT_URL
+                                REPO_PATH=$(echo $GIT_URL | sed 's|https://github.com/||' | sed 's|.git$||')
                                 curl -s -X POST \
                                   -H "Authorization: token $GITHUB_TOKEN" \
                                   -H "Accept: application/vnd.github.v3+json" \
-                                  "https://api.github.com/repos/$GIT_URL/statuses/$GIT_COMMIT" \
+                                  "https://api.github.com/repos/${REPO_PATH}/statuses/$GIT_COMMIT" \
                                   -d '{"state":"pending","description":"Build started","context":"Jenkins CI"}' || echo "GitHub status update failed"
                             else
                                 echo "No GitHub token available, skipping status update"
@@ -114,7 +116,7 @@ pipeline {
                     steps {
                         dir(BACKEND_DIR) {
                             echo '🧪 Backend Tests...'
-                            sh 'npm test'
+                            sh 'CI=true npm test -- --coverage --watchAll=false'
                         }
                     }
                 }
@@ -196,10 +198,12 @@ pipeline {
                 try {
                     sh '''
                         if [ -n "$GITHUB_TOKEN" ]; then
+                            # Extract owner/repo from GIT_URL
+                            REPO_PATH=$(echo $GIT_URL | sed 's|https://github.com/||' | sed 's|.git$||')
                             curl -s -X POST \
                               -H "Authorization: token $GITHUB_TOKEN" \
                               -H "Accept: application/vnd.github.v3+json" \
-                              "https://api.github.com/repos/$GIT_URL/statuses/$GIT_COMMIT" \
+                              "https://api.github.com/repos/${REPO_PATH}/statuses/$GIT_COMMIT" \
                               -d '{"state":"success","description":"Build passed","context":"Jenkins CI"}' || echo "GitHub status update failed"
                         else
                             echo "No GitHub token available, skipping status update"
@@ -217,10 +221,12 @@ pipeline {
                 try {
                     sh '''
                         if [ -n "$GITHUB_TOKEN" ]; then
+                            # Extract owner/repo from GIT_URL
+                            REPO_PATH=$(echo $GIT_URL | sed 's|https://github.com/||' | sed 's|.git$||')
                             curl -s -X POST \
                               -H "Authorization: token $GITHUB_TOKEN" \
                               -H "Accept: application/vnd.github.v3+json" \
-                              "https://api.github.com/repos/$GIT_URL/statuses/$GIT_COMMIT" \
+                              "https://api.github.com/repos/${REPO_PATH}/statuses/$GIT_COMMIT" \
                               -d '{"state":"failure","description":"Build failed","context":"Jenkins CI"}' || echo "GitHub status update failed"
                         else
                             echo "No GitHub token available, skipping status update"
@@ -238,10 +244,12 @@ pipeline {
                 try {
                     sh '''
                         if [ -n "$GITHUB_TOKEN" ]; then
+                            # Extract owner/repo from GIT_URL
+                            REPO_PATH=$(echo $GIT_URL | sed 's|https://github.com/||' | sed 's|.git$||')
                             curl -s -X POST \
                               -H "Authorization: token $GITHUB_TOKEN" \
                               -H "Accept: application/vnd.github.v3+json" \
-                              "https://api.github.com/repos/$GIT_URL/statuses/$GIT_COMMIT" \
+                              "https://api.github.com/repos/${REPO_PATH}/statuses/$GIT_COMMIT" \
                               -d '{"state":"error","description":"Build unstable","context":"Jenkins CI"}' || echo "GitHub status update failed"
                         else
                             echo "No GitHub token available, skipping status update"

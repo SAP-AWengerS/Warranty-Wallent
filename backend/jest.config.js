@@ -10,4 +10,16 @@ module.exports = {
     '!**/coverage/**',
     '!jest.config.js'
   ],
+  testEnvironmentOptions: {
+    node: {
+      global: {
+        Buffer: Buffer
+      }
+    }
+  },
+  globals: {
+    'ts-jest': {
+      isolatedModules: true
+    }
+  }
 };
