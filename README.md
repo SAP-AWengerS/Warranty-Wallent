@@ -49,7 +49,7 @@ It allows uploading warranty bills, tracking warranty periods with automated rem
 ---
 
 
-https://github.com/user-attachments/assets/a9ca8722-56e1-4e30-bff1-03dcc713b134
+https://github.com/user-attachments/assets/9fe2b3ed-c4d2-4a09-a052-b650cbf82955
 
 
 ---
