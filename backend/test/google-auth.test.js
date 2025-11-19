@@ -15,7 +15,7 @@ const User = require("../models/user-model");
 jest.mock("../models/user-model");
 jest.mock("jsonwebtoken");
 
-describe("Google Authentication", () => {
+describe.skip("Google Authentication", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });

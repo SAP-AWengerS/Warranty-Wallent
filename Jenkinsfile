@@ -9,7 +9,6 @@ pipeline {
         FRONTEND_DIR = 'frontend'
         BACKEND_DIR = 'backend'
         NODE_ENV = 'test'
-        GITHUB_TOKEN = credentials('GITHUB_TOKEN')
     }
 
     stages {
@@ -19,23 +18,15 @@ pipeline {
                 echo '🔄 Checking out code...'
                 checkout scm
                 script {
-                    // Set GitHub status to pending if credentials are available
+                    // Set GitHub status to pending using Jenkins plugin
                     try {
-                        sh '''
-                            if [ -n "$GITHUB_TOKEN" ]; then
-                                # Extract owner/repo from GIT_URL
-                                REPO_PATH=$(echo $GIT_URL | sed 's|https://github.com/||' | sed 's|.git$||')
-                                curl -s -X POST \
-                                  -H "Authorization: token $GITHUB_TOKEN" \
-                                  -H "Accept: application/vnd.github.v3+json" \
-                                  "https://api.github.com/repos/${REPO_PATH}/statuses/$GIT_COMMIT" \
-                                  -d '{"state":"pending","description":"Build started","context":"Jenkins CI"}' || echo "GitHub status update failed"
-                            else
-                                echo "No GitHub token available, skipping status update"
-                            fi
-                        '''
+                        // Using githubNotify step from GitHub plugin
+                        githubNotify context: 'Jenkins CI',
+                                     description: 'Build started',
+                                     status: 'PENDING'
                     } catch (Exception e) {
-                        echo "GitHub status update failed: ${e.getMessage()}"
+                        echo "GitHub status update not available: ${e.getMessage()}"
+                        echo "Install GitHub plugin or configure GitHub webhook for status updates"
                     }
                 }
             }
@@ -196,21 +187,11 @@ pipeline {
             echo '✅ Pipeline succeeded!'
             script {
                 try {
-                    sh '''
-                        if [ -n "$GITHUB_TOKEN" ]; then
-                            # Extract owner/repo from GIT_URL
-                            REPO_PATH=$(echo $GIT_URL | sed 's|https://github.com/||' | sed 's|.git$||')
-                            curl -s -X POST \
-                              -H "Authorization: token $GITHUB_TOKEN" \
-                              -H "Accept: application/vnd.github.v3+json" \
-                              "https://api.github.com/repos/${REPO_PATH}/statuses/$GIT_COMMIT" \
-                              -d '{"state":"success","description":"Build passed","context":"Jenkins CI"}' || echo "GitHub status update failed"
-                        else
-                            echo "No GitHub token available, skipping status update"
-                        fi
-                    '''
+                    githubNotify context: 'Jenkins CI',
+                                 description: 'Build passed',
+                                 status: 'SUCCESS'
                 } catch (Exception e) {
-                    echo "GitHub status update failed: ${e.getMessage()}"
+                    echo "GitHub status update not available: ${e.getMessage()}"
                 }
             }
         }
@@ -219,21 +200,11 @@ pipeline {
             echo '❌ Pipeline failed!'
             script {
                 try {
-                    sh '''
-                        if [ -n "$GITHUB_TOKEN" ]; then
-                            # Extract owner/repo from GIT_URL
-                            REPO_PATH=$(echo $GIT_URL | sed 's|https://github.com/||' | sed 's|.git$||')
-                            curl -s -X POST \
-                              -H "Authorization: token $GITHUB_TOKEN" \
-                              -H "Accept: application/vnd.github.v3+json" \
-                              "https://api.github.com/repos/${REPO_PATH}/statuses/$GIT_COMMIT" \
-                              -d '{"state":"failure","description":"Build failed","context":"Jenkins CI"}' || echo "GitHub status update failed"
-                        else
-                            echo "No GitHub token available, skipping status update"
-                        fi
-                    '''
+                    githubNotify context: 'Jenkins CI',
+                                 description: 'Build failed',
+                                 status: 'FAILURE'
                 } catch (Exception e) {
-                    echo "GitHub status update failed: ${e.getMessage()}"
+                    echo "GitHub status update not available: ${e.getMessage()}"
                 }
             }
         }
@@ -242,21 +213,11 @@ pipeline {
             echo '⚠️ Pipeline unstable!'
             script {
                 try {
-                    sh '''
-                        if [ -n "$GITHUB_TOKEN" ]; then
-                            # Extract owner/repo from GIT_URL
-                            REPO_PATH=$(echo $GIT_URL | sed 's|https://github.com/||' | sed 's|.git$||')
-                            curl -s -X POST \
-                              -H "Authorization: token $GITHUB_TOKEN" \
-                              -H "Accept: application/vnd.github.v3+json" \
-                              "https://api.github.com/repos/${REPO_PATH}/statuses/$GIT_COMMIT" \
-                              -d '{"state":"error","description":"Build unstable","context":"Jenkins CI"}' || echo "GitHub status update failed"
-                        else
-                            echo "No GitHub token available, skipping status update"
-                        fi
-                    '''
+                    githubNotify context: 'Jenkins CI',
+                                 description: 'Build unstable',
+                                 status: 'ERROR'
                 } catch (Exception e) {
-                    echo "GitHub status update failed: ${e.getMessage()}"
+                    echo "GitHub status update not available: ${e.getMessage()}"
                 }
             }
         }
